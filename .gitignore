@@ -1,0 +1,11 @@
+**/bin
+**/build
+**/.DS_STore
+**/.classpath
+**/.project
+**/.settings
+**/.idea
+/bin/
+**/build/
+**/test-output
+/build/

@@ -125,5 +125,9 @@ public class HotelParis {
 
         
     }//createReservationOrViewGUI
-
+    public static void createGuestMenu() {
+    
+        frame.setTitle("Hotel Paris - Guest system");
+        
+    }
 }

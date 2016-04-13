@@ -67,6 +67,34 @@ public class HotelParis {
 
     }//createMainGUI
     
+
+public static void createSignInGUI() {
+    pane.removeAll();
+    
+    textField = new JTextField();
+    JButton submitButton = new JButton("Submit");
+    JButton backButton = new JButton ("Back");        
+    JLabel signInLabel = new JLabel("Enter User ID:");
+    
+    frame.setTitle("Hotel Paris - Sign In");
+    pane = frame.getContentPane(); //Get content pane
+    pane.setLayout(null); //Apply null layout
+    
+    signInLabel.setBounds(175, 75, 310, 25);
+    submitButton.setBounds(175, 200, 310, 50);
+    textField.setBounds(175, 100, 310, 25);
+    backButton.setBounds(10, 300, 75, 50);
+
+            
+    frame.add(submitButton);
+    frame.add(backButton);
+    frame.add(signInLabel);
+    frame.add(textField);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.repaint();
+
+}//createSignInGUI
+    
     public static void createReservationOrViewGUI() {
       
         frame.setTitle("HotelParis - Reservation");

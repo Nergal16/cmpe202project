@@ -12,8 +12,9 @@ public class HotelParis {
     static JFrame frame;
     static JPanel panel;
     static JTextArea textArea;
-    static JButton guestBut;
-    static JButton managerBut;
+    static JButton guestButton;
+    static JButton managerButton;
+    static JTextField textField;
     public static void main (String args[]) throws IOException, ClassNotFoundException {
         //set Look and feel
         try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());}
@@ -48,17 +49,17 @@ public class HotelParis {
         textLabel.setBounds(275, 50, 310, 25);
 
         //create two radio buttons and associate action listeners
-        guestBut = new JButton("Guest");
-        managerBut = new JButton("Manager");
-        guestBut.setBounds(175, 100, 310, 50);
-        managerBut.setBounds(175, 200, 310, 50);
+        guestButton = new JButton("Guest");
+        managerButton = new JButton("Manager");
+        guestButton.setBounds(175, 100, 310, 50);
+        managerButton.setBounds(175, 200, 310, 50);
 
-        frame.add(guestBut);
-        frame.add(managerBut);
+        frame.add(guestButton);
+        frame.add(managerButton);
 
         //add button
-        JButton contBut = new JButton("Continue");
-        contBut.setEnabled(true);
+        JButton contButton = new JButton("Continue");
+        contButton.setEnabled(true);
 
 
         pane.add(panel);
@@ -97,7 +98,7 @@ public class HotelParis {
     
     public static void createReservationOrViewGUI() {
       
-        frame.setTitle("HotelParis - Reservation");
+        frame.setTitle("Hotel Paris - Reservation");
         pane = frame.getContentPane(); //content pane
         pane.setLayout(null); //Apply null layout
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -109,18 +110,18 @@ public class HotelParis {
 
         JButton makeReservationButton = new JButton("Make a Reservation");
         JButton viewOrCanceltButton = new JButton("View/Cancel a Reservation");
-        JButton backButt = new JButton ("Back");
+        JButton backButton = new JButton ("Back");
 
         frame.add(ReserveRoomLabel);
         frame.add(viewOrCancelReservation);
         frame.add(makeReservationButton);
         frame.add(viewOrCanceltButton);
-        frame.add(backButt);
+        frame.add(backButton);
         ReserveRoomLabel.setBounds(175, 75, 310, 25);
         viewOrCancelReservation.setBounds(175, 175, 310, 25);
-        makeReservationButt.setBounds(175, 100, 310, 50);
-        viewOrCanceltButt.setBounds(175, 200, 310, 50);
-        backButt.setBounds(10, 300, 75, 50);
+        makeReservationButton.setBounds(175, 100, 310, 50);
+        viewOrCanceltButton.setBounds(175, 200, 310, 50);
+        backButton.setBounds(10, 300, 75, 50);
 
         
     }//createReservationOrViewGUI

@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 /**
@@ -64,5 +66,35 @@ public class HotelParis {
         frame.repaint();
 
     }//createMainGUI
+    
+    public static void createReservationOrViewGUI() {
+      
+        frame.setTitle("HotelParis - Reservation");
+        pane = frame.getContentPane(); //content pane
+        pane.setLayout(null); //Apply null layout
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        //create label for 'create an acount' and 'sign in'
+        JLabel ReserveRoomLabel = new JLabel("Reserve your room now");
+        JLabel viewOrCancelReservation = new JLabel("View your current "
+                + "reservation or Cancel a reservation");
+
+        JButton makeReservationButton = new JButton("Make a Reservation");
+        JButton viewOrCanceltButton = new JButton("View/Cancel a Reservation");
+        JButton backButt = new JButton ("Back");
+
+        frame.add(ReserveRoomLabel);
+        frame.add(viewOrCancelReservation);
+        frame.add(makeReservationButton);
+        frame.add(viewOrCanceltButton);
+        frame.add(backButt);
+        ReserveRoomLabel.setBounds(175, 75, 310, 25);
+        viewOrCancelReservation.setBounds(175, 175, 310, 25);
+        makeReservationButt.setBounds(175, 100, 310, 50);
+        viewOrCanceltButt.setBounds(175, 200, 310, 50);
+        backButt.setBounds(10, 300, 75, 50);
+
+        
+    }//createReservationOrViewGUI
 
 }

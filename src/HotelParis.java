@@ -122,6 +122,15 @@ public class HotelParis {
         makeReservationButton.setBounds(175, 100, 310, 50);
         viewOrCanceltButton.setBounds(175, 200, 310, 50);
         backButton.setBounds(10, 300, 75, 50);
+      //adding a button click listener
+        makeReservationButt.addActionListener( 
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event) {
+                    createMakeReservationGUI();
+                }//actionPerformed
+            }//ActionListener
+        );
 
         
     }//createReservationOrViewGUI
@@ -130,4 +139,9 @@ public class HotelParis {
         frame.setTitle("Hotel Paris - Guest system");
         
     }
+    public static void createMakeReservationGUI() {
+    	//code for reservation process
+    	
+    }
+    
 }

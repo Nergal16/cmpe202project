@@ -61,13 +61,26 @@ public class HotelParis {
         JButton contButton = new JButton("Continue");
         contButton.setEnabled(true);
 
+        //set actionListener for manager button
+        managerButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createCalendarGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
 
         pane.add(panel);
         frame.setVisible(true);
         frame.repaint();
 
     }//createMainGUI
-    
+
+    public static void createCalendarGUI() {
+
+
+    }
 
     public static void createSignInGUI() {
         pane.removeAll();
@@ -123,7 +136,7 @@ public class HotelParis {
         viewOrCanceltButton.setBounds(175, 200, 310, 50);
         backButton.setBounds(10, 300, 75, 50);
       //adding a button click listener
-        makeReservationButt.addActionListener( 
+        makeReservationButton.addActionListener(
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {

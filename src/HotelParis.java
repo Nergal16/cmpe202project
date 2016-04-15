@@ -123,7 +123,7 @@ public class HotelParis {
         viewOrCanceltButton.setBounds(175, 200, 310, 50);
         backButton.setBounds(10, 300, 75, 50);
       //adding a button click listener
-        makeReservationButt.addActionListener( 
+        viewOrCanceltButton.addActionListener(
             new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {

@@ -87,7 +87,7 @@ public class HotelParis {
         textField.setBounds(175, 100, 310, 25);
         backButton.setBounds(10, 300, 75, 50);
 
-        //added on 4/14/2016
+        //added on 4/14/2016 by Mandeep Kaur
         //add action listener 
         
         submitButton.addActionListener( 

@@ -100,6 +100,16 @@ public class HotelParis {
             }//ActionListener
         );
         
+        //added on 4/15/2016 by Mandeep Kaur
+        //associate go back with its button
+        backButton.addActionListener( 
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event) {
+                    createMainGUI();
+                }//actionPerformed
+            }//ActionListener
+        );        
                 
         frame.add(submitButton);
         frame.add(backButton);

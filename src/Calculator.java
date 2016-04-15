@@ -10,17 +10,29 @@ import java.io.IOException;
 */   
 
 class Calculator{
+    
+    //Define variable and operator
+    static double firVariable=0,secVariable=0,result=0;
+    static int operator=0;
+    
+    Calculator(){
+    //Design Calculator GUI with Listener  
+    }
 
-public void Add(){
-}
+    public void Add(){
+      result = firVariable + secVariable;
+    }
 
-public void Minus(){
-}
+    public void Minus(){
+      result = firVariable - secVariable;
+    }
 
-public void Divide(){
-}
+    public void Divide(){
+      result = firVariable/secVariable;
+    }
 
-public void Multi(){
-}
+    public void Multi(){
+      result = firVariable*secVariable;
+    }
 
 }

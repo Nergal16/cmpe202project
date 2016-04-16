@@ -27,6 +27,7 @@ public class HotelParis {
         frame.setLocation(500, 100); //open in center of screen
         frame.setSize(680, 400);
         frame.setResizable(false);
+        frame.getContentPane().add(new BackgroundImage("Paris.jpg"));
         frame.setVisible(true);
         createMainGUI(); //create main GUI for guest and manager
 

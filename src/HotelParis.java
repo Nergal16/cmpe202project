@@ -67,8 +67,9 @@ public class HotelParis {
         frame.repaint();
 
     }//createMainGUI
-    
-
+/**
+ * Created by Mandeep Kaur on 4/12/16.
+ */
     public static void createSignInGUI() {
         pane.removeAll();
         
@@ -86,6 +87,29 @@ public class HotelParis {
         textField.setBounds(175, 100, 310, 25);
         backButton.setBounds(10, 300, 75, 50);
 
+        //added on 4/14/2016 by Mandeep Kaur
+        //add action listener 
+        
+        submitButton.addActionListener( 
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event) {
+                    //signin
+                    createSignInGUI();
+                }//actionPerformed
+            }//ActionListener
+        );
+        
+        //added on 4/15/2016 by Mandeep Kaur
+        //associate go back with its button
+        backButton.addActionListener( 
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event) {
+                    createMainGUI();
+                }//actionPerformed
+            }//ActionListener
+        );        
                 
         frame.add(submitButton);
         frame.add(backButton);

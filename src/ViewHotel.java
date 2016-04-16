@@ -6,7 +6,7 @@ import java.io.IOException;
 
 //add view hotel function with GUI to display pictures of the hotel
 
-Class ViewHotel{
+class ViewHotel{
 
 ViewHotel(){
 }

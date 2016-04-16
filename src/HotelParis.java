@@ -158,10 +158,46 @@ public class HotelParis {
 
         
     }//createReservationOrViewGUI
+
+    /**
+     * GUI for guest menu is created
+     */
     public static void createGuestMenu() {
-    
+        pane.removeAll();
         frame.setTitle("Hotel Paris - Guest system");
-        
+
+        pane = frame.getContentPane(); //Get content pane
+        pane.setLayout(null); //Apply null layout
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //create label for 'create an acount' and 'sign in'
+        JLabel userIDLabel = new JLabel("Have an Account? Log in");
+        JLabel createAccountTextArea = new JLabel("Not a user? Create your account");
+
+        JButton signInButt = new JButton("Sign In");
+        JButton createAccountButt = new JButton("Create Account");
+        JButton backButt = new JButton ("Back");
+
+        frame.add(userIDLabel);
+        frame.add(createAccountTextArea);
+        frame.add(signInButt);
+        frame.add(createAccountButt);
+        frame.add(backButt);
+        userIDLabel.setBounds(175, 75, 310, 25);
+        createAccountTextArea.setBounds(175, 175, 310, 25);
+        signInButt.setBounds(175, 100, 310, 50);
+        createAccountButt.setBounds(175, 200, 310, 50);
+        backButt.setBounds(10, 300, 75, 50);
+
+        //set actionListener for button
+        signInButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createSignInGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
     }
     public static void createMakeReservationGUI() {
     	//code for reservation process

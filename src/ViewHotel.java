@@ -8,7 +8,8 @@ import java.io.IOException;
 
 class ViewHotel{
 
-ViewHotel(){
-}
+    ViewHotel(){
+
+    }
 
 }

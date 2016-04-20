@@ -1,10 +1,23 @@
 package RoomServicePkg;
 
 /**
- * Created by home on 4/14/2016.
+ * Created by Haroldo Filho on 4/14/2016.
  */
 public class Bacon extends AddOnItem {
-    public Bacon(String d, Double p) {
-        super(d, p);
+    private Double addedPrice;
+    public Bacon(String d, Double p, RoomService item) {
+
+        super(d, p, item);
     }
+
+    @Override
+    public Double getPrice() {
+        addedPrice = super.getAddedPrice(); // price from main component passed in constructor
+        return addedCustomPrice(addedPrice);  //
+    }
+
+    private Double addedCustomPrice(Double price){
+        return price + super.getPrice();  // price of this component
+    }
+
 }

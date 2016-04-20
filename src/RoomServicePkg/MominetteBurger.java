@@ -1,11 +1,11 @@
 package RoomServicePkg;
 
 /**
- * Created by home on 4/14/2016.
+ * Created by Haroldo Filho on 4/14/2016.
  */
 public class MominetteBurger extends RoomServiceOrder {
 
-    public MominetteBurger(String item) {
-        super(item);
+    public MominetteBurger(String item, Double price) {
+        super(item, price);
     }
 }

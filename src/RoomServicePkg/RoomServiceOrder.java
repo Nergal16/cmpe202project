@@ -11,10 +11,18 @@ public class RoomServiceOrder implements RoomService {
 
     private ArrayList<RoomService> items = new ArrayList<RoomService>();
     private String description;
+    private Double price;
 
-    public RoomServiceOrder(String item){
+    public RoomServiceOrder(String item, Double itemPrice){
+        price = itemPrice;
         description = item;
     }
+
+    @Override
+    public Double getPrice() {
+        return price;
+    }
+
     @Override
     public void printItems() {
         // for test only TODO: delete log message after UI is done
@@ -35,7 +43,7 @@ public class RoomServiceOrder implements RoomService {
     }
 
     @Override
-    public void getChild(int childIndex) {
-        items.get(childIndex);
+    public RoomService getChild(int childIndex) {
+        return items.get(childIndex);
     }
 }

@@ -204,5 +204,104 @@ public class HotelParis {
     	//code for reservation process
     	
     }
+
+    /**
+     * GUI for create an account
+     */
+    public static void createAccountGUI() {
+        pane.removeAll();
+
+        JLabel generalLabel = new JLabel("Create your account:");
+        JLabel idLabel = new JLabel("Enter User ID:");
+        JLabel useNameLabel = new JLabel("Enter User name:");
+        final JTextField userIDtextField = new JTextField();
+        final JTextField userNametextField = new JTextField();
+        JButton submitButt = new JButton("Submit");
+        JButton backButt = new JButton ("Back");
+
+        frame.setTitle("ChampsElysees Hotel - Create an Account");
+        pane = frame.getContentPane(); //Get content pane
+        pane.setLayout(null); //Apply null layout
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        generalLabel.setBounds(275, 40, 310, 25);
+        userIDtextField.setBounds(175, 100, 310, 25);
+        userNametextField.setBounds(175, 150, 310, 25);
+        idLabel.setBounds(175, 75, 310, 25);
+        useNameLabel.setBounds(175, 125, 310, 25);
+        submitButt.setBounds(175, 200, 310, 50);
+        backButt.setBounds(10, 300, 75, 50);
+
+        //TODO add action listener
+
+
+        //associate go back with its button
+        backButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createGuestMenu();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        frame.add(generalLabel);
+        frame.add(userIDtextField);
+        frame.add(userNametextField);
+        frame.add(idLabel);
+        frame.add(useNameLabel);
+        frame.add(submitButt);
+        frame.add(backButt);
+        frame.repaint();
+
+    }//createAccountGUI
+
+    /**
+     * GUI to show when guest successfully creates an account
+     */
+    public static void createCongratsGUI() {
+        pane.removeAll();
+
+        JButton submitButt = new JButton("Go to Sign In");
+        JButton backButt = new JButton ("Home");
+        JLabel signInLabel = new JLabel("Congratulations! Your account has "
+                + "been created successfully. \nPlease sign In");
+
+        frame.setTitle("ChampsElysees Hotel - Account Created!");
+        pane = frame.getContentPane(); //Get content pane
+        pane.setLayout(null); //Apply null layout
+
+        signInLabel.setBounds(140, 75, 500, 25);
+        submitButt.setBounds(175, 200, 310, 50);
+        backButt.setBounds(10, 300, 75, 50);
+
+        //add action listener
+        submitButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        //signin
+                        createSignInGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //associate go back with its button
+        backButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createMainGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        frame.add(submitButt);
+        frame.add(backButt);
+        frame.add(signInLabel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.repaint();
+
+    }//createCongratsGUI
     
 }

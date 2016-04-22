@@ -1,3 +1,5 @@
+import RoomServicePkg.RoomServiceController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,7 +31,11 @@ public class HotelParis {
         frame.setResizable(false);
         frame.getContentPane().add(new BackgroundImage("Paris.jpg"));
         frame.setVisible(true);
-        createMainGUI(); //create main GUI for guest and manager
+
+        // set frame for RoomServiceController
+        RoomServiceController.getInstance().setMenuScreenFrame(frame);
+        //create main GUI for guest and manager
+        createMainGUI();
 
     }//main
     public static void createMainGUI() {

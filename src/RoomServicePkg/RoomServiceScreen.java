@@ -24,12 +24,17 @@ public class RoomServiceScreen {
         catch (IllegalAccessException e) {}
         catch (UnsupportedLookAndFeelException e) {}
 
-        frame = new JFrame ();
+
+    }
+
+    public  void setFrame (JFrame frame){
+        this.frame = frame;
         frame.setLocation(500, 100); //open in center of screen
         frame.setSize(680, 400);
         frame.setResizable(false);
         frame.setVisible(true);
     }
+
     public void draw (){
         //clear pane if not null
         if (pane != null) {

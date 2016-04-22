@@ -1,15 +1,31 @@
 package RoomServicePkg;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
  * Created by Haroldo Filho on 4/15/2016.
  */
 public class RoomServiceController {
+    private static RoomServiceController ourInstance = new RoomServiceController();
+
+    public static RoomServiceController getInstance() {
+        return ourInstance;
+    }
+
+    private RoomServiceController() {
+    }
     RoomService currentOrder;
     ArrayList<RoomService> burgerList = null;
 
+    private RoomServiceScreen menuScreen = new RoomServiceScreen(this);
+
+    public void setMenuScreenFrame(JFrame frame){
+        menuScreen.setFrame(frame);
+    }
+
     public void startNewOrder(Integer roomNumber){
+        menuScreen.draw();
         currentOrder = new RoomServiceOrder("Order for room: " + roomNumber.toString(), 0.0);
     }
 

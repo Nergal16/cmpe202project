@@ -26,7 +26,7 @@ public class RoomServiceScreen {
 
 
     }
-
+    // the frame is passed from the main UI
     public  void setFrame (JFrame frame){
         this.frame = frame;
         frame.setLocation(500, 100); //open in center of screen

@@ -66,16 +66,13 @@ public class Main {
 		pane=frame.getContentPane();
 		
 		hotel.addItemListener(new ItemListener(){
-
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				// TODO Auto-generated method stub
-				
 			}		
 		});
 		
 		food.addItemListener(new ItemListener(){
-
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				// TODO Auto-generated method stub
@@ -83,15 +80,10 @@ public class Main {
 			}
 		});
 		rooms.addItemListener(new ItemListener(){
-
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				// TODO Auto-generated method stub
-				
-			}
-
-			
-			
+			}	
 		});
 	
 		ButtonGroup group=new ButtonGroup();

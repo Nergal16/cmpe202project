@@ -3,14 +3,19 @@ package booking;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import org.jdatepicker.impl.DateComponentFormatter;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 public class BookingGUI {
 	
@@ -18,7 +23,7 @@ public class BookingGUI {
 	    static JTextArea textAreaGuest;
 	    static JFrame frame;
 	   static Container pane;
-	 public static void createReservationOrViewGUI() {
+	   public static void createReservationOrViewGUI() {
 		   frame = new JFrame ();
 	       frame.setLocation(500, 100); //open in center of screen
 	       frame.setSize(680, 400);
@@ -61,12 +66,7 @@ public class BookingGUI {
 	       
 	   }
 	   public static void createMakeReservationGUI() {
-		   Date checkInDate;
-		    Date checkOutDate;
-		    GregorianCalendar gcalendar;
-	   
-	       checkInDate = null;
-	       checkOutDate = null;
+
 	       pane.removeAll();
 	       
 	       final JButton confirmButt = new JButton("Confirmed");
@@ -85,29 +85,78 @@ public class BookingGUI {
 	       textAreaGuest.setEnabled(false);
 	       textAreaGuest.setText("Room information will be printed here as \n"
 	               + "you select the check-in and check-out \ndates and room type.");
-	       
-	       final JTextField checkInTextField = new JTextField(10);
-	       final JTextField checkOutTextField = new JTextField(10);
-	       
-	       frame.setTitle("Hotel Paris- Make Transaction");
+	   
+	       frame.setTitle("Hotel Paris - Make Transaction");
 	       pane = frame.getContentPane(); //Get content pane
 	       pane.setLayout(null); //Apply null layout
+	       UtilDateModel model = new UtilDateModel();
+	       UtilDateModel modelO = new UtilDateModel();
+	     //model.setDate(20,04,2014);
+	     // Need this...
+	     Properties p = new Properties();
+	     p.put("text.today", "Today");
+	     p.put("text.month", "Month");
+	     p.put("text.year", "Year");
+	     JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+	     // Don't know about the formatter, but there it is...
+	     JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateComponentFormatter());
+	     JDatePanelImpl datePanelO = new JDatePanelImpl(modelO, p);
+	     // Don't know about the formatter, but there it is...
+	     JDatePickerImpl datePickerO = new JDatePickerImpl(datePanelO, new DateComponentFormatter());
+	      
+	   //    Date selectedDate = (Date) datePicker.getModel().getValue();
 	       
 	       errorMessage.setBounds(25, 200, 200, 50);
-	       checkInLabel.setBounds(50, 40, 75, 25);
-	       checkOutLabel.setBounds(150, 40, 75, 25);
+	      checkInLabel.setBounds(30, 40, 75, 25);
+	      datePicker.setBounds(100, 40, 140, 25);
+	       checkOutLabel.setBounds(30, 80, 75, 25);
+	       datePickerO.setBounds(100, 80, 140, 25);
 	       confirmButt.setBounds(280, 300, 150, 50);
 	       transactionDoneButt.setBounds(480, 300, 150, 50);
 	       backButt.setBounds(10, 300, 75, 50);
-	       checkInTextField.setBounds(50, 60, 80, 25);
-	       checkOutTextField.setBounds(150, 60, 80, 25);
-	       roomType.setBounds(50, 100, 80, 25);
-	       luxButt.setBounds(50, 120, 80, 50);
-	       econButt.setBounds(150, 120, 80, 50);
+	       //checkInTextField.setBounds(50, 60, 80, 25);
+	     
+	       roomType.setBounds(30, 120, 80, 25);
+	       luxButt.setBounds(30, 140, 80, 50);
+	       econButt.setBounds(150, 140, 80, 50);
 	       textAreaGuest.setBounds(280, 40, 350, 250);
+	  
+	       
 	       System.out.println("came here..");   
 	       frame.repaint();      
-	  
+	       //ChangeListener
+	       ChangeListener listener = new
+	           ChangeListener() {
+	               @Override
+	               public void stateChanged(ChangeEvent event) {
+	            	   System.err.println("yess");
+	            	 
+	                 //  int arr[] = model.calculateAvailableRooms(checkInDate, checkOutDate);
+	                  // String textToDisplay = calculateMessage(arr);
+	                //   textAreaGuest.setText(textToDisplay);
+	                  // frame.repaint(); 
+	       }
+	        
+	       };
+	      model.addChangeListener(listener);
+	      modelO.addChangeListener(listener);
+	    /**** model.addChangeListener(new
+	               ChangeListener()  {
+	           public void keyPressed(KeyEvent e) {
+	             if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+	               model.setSelected(false);
+	             }
+	           }
+
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+	         });**/
+	       
+	       //add listener to text field -- serves as Controller in MVC pattern
+	      
 	       frame.add(errorMessage);
 	       frame.add(confirmButt);
 	       frame.add(transactionDoneButt);
@@ -116,13 +165,14 @@ public class BookingGUI {
 	       frame.add(econButt);
 	       frame.add(checkInLabel);
 	       frame.add(checkOutLabel);
-	       frame.add(checkInTextField);
-	       frame.add(checkOutTextField);
+	       frame.add(datePicker);
+	      // frame.add(checkInTextField);
+	       //frame.add(checkOutTextField);
+	       frame.add(datePickerO);
 	       frame.add(roomType);
 	       frame.add(textAreaGuest);
 	       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       frame.repaint();
 	      
 	   }          
-
-}
+	}

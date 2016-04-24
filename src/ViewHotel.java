@@ -15,11 +15,11 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-public class ViewHotel1 extends JPanel {
+public class ViewHotel extends JPanel {
     private JButton button2;
     private JButton button1;
 
-    public ViewHotel1() {
+    public ViewHotel() {
         this.initComponents();
     }
 

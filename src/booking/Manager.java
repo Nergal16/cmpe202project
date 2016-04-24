@@ -1,16 +1,20 @@
 package booking;
 
-public class Manager implements HotelObserver{
+public class Manager extends HotelObserver{
 
+	public Manager(HotelRoomSubject subject){
+		subject.addUsers(this);
+	}
 	@Override
-	public void update() {
-		// TODO Auto-generated method stub
+	public void update(String str) {
+		// do nothing
+		action(str);
 		
 	}
 
 	@Override
-	public void action() {
-		// TODO Auto-generated method stub
+	public void action(String str) {
+		//Send message on managers portal that Room is booked/cancelled
 		
 	}
 

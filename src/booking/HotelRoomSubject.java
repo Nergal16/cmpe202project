@@ -2,6 +2,11 @@ package booking;
 
 public interface HotelRoomSubject {
 // Subject
-	public abstract void addObs();
-public abstract void updateAll();
+	
+    public abstract void notifyUser(String s);
+    public abstract void addUsers(Observers observer);
+    public abstract void bookRoom();
+    public abstract void cancelRoom();
+	
+
 }

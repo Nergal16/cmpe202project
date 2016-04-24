@@ -7,8 +7,9 @@ import java.sql.Statement;
 
 public class FoodReviews extends MainReviews{
 
-	public FoodReviews(String item) {
-		super(item);
+	public FoodReviews() {
+		//super(item);
+		super();
 		// TODO Auto-generated constructor stub
 	}
 	public void printItems(){

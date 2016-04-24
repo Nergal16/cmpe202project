@@ -6,8 +6,8 @@ public class MainReviews implements Review {
 	 private ArrayList<MainReviews> items = new ArrayList<MainReviews>();
     private String description;
 
-    public MainReviews(String item){
-        description = item;
+    public MainReviews(){
+   
     }
    
 	@Override

@@ -1,10 +1,15 @@
 import RoomServicePkg.RoomServiceController;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.*;
 
 /**
  * Created by Nergal Issaie on 4/11/16.
@@ -17,7 +22,33 @@ public class HotelParis {
     static JButton guestButton;
     static JButton managerButton;
     static JTextField textField;
+    static JTextArea textAreaFormat;
+    static TreeMap<String, UserAccount> treeMapGuest; //user account
+    static UserAccount userAccount;
+    static TreeMap<Date, Room> treeMapRoom; //room
+    static Model model;
+    static GregorianCalendar gcalendar;
+    static ArrayList<ChangeListener> changeListener;
+    static int transactionID;
+
     public static void main (String args[]) throws IOException, ClassNotFoundException {
+        textAreaFormat = new JTextArea(20, 40);
+        treeMapGuest = new TreeMap<String, UserAccount>();
+        userAccount = new UserAccount();
+        treeMapRoom = new TreeMap<Date, Room>();
+        readFromDisk();
+        model = new Model(treeMapRoom, treeMapGuest, transactionID);
+
+        gcalendar = new GregorianCalendar();
+        Date trialTime = new Date();
+        gcalendar.setTime(trialTime);
+        gcalendar.set(2014, 10, 1, 0, 0, 0);
+        gcalendar.set(Calendar.MILLISECOND, 0);
+        gcalendar.add(Calendar.DAY_OF_YEAR, 1);
+
+        //listeners to be used in MVC
+        changeListener = new ArrayList<ChangeListener>();
+
         //set Look and feel
         try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());}
         catch (ClassNotFoundException e) {}
@@ -43,7 +74,7 @@ public class HotelParis {
         if (pane != null) {
             pane.removeAll();
         }//if
-        frame.setTitle("Welcome to ChampsElysees Hotel");
+        frame.setTitle("Welcome to Hotel Paris");
         pane = frame.getContentPane(); //get content pane
         pane.setLayout(null); //apply null layout
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -309,5 +340,22 @@ public class HotelParis {
         frame.repaint();
 
     }//createCongratsGUI
+
+    public static void readFromDisk() throws FileNotFoundException,
+            IOException, ClassNotFoundException {
+        try {
+            ObjectInputStream in = new ObjectInputStream(
+                    new FileInputStream("treeMapRoom.data"));
+            treeMapRoom = (TreeMap<Date, Room>)in.readObject();
+            in.close();
+
+            ObjectInputStream in2 = new ObjectInputStream(
+                    new FileInputStream("treeMapGuest.data"));
+            treeMapGuest = (TreeMap<String, UserAccount>)in2.readObject();
+            in2.close();
+        }//try
+        catch (IOException | ClassNotFoundException e) {}
+
+    }//readFromDisk
     
 }

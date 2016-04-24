@@ -140,21 +140,7 @@ public class BookingGUI {
 	       };
 	      model.addChangeListener(listener);
 	      modelO.addChangeListener(listener);
-	    /**** model.addChangeListener(new
-	               ChangeListener()  {
-	           public void keyPressed(KeyEvent e) {
-	             if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-	               model.setSelected(false);
-	             }
-	           }
 
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-	         });**/
-	       
 	       //add listener to text field -- serves as Controller in MVC pattern
 	      
 	       frame.add(errorMessage);
@@ -176,3 +162,4 @@ public class BookingGUI {
 	      
 	   }          
 	}
+

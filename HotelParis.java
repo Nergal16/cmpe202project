@@ -1,8 +1,15 @@
 
 import javax.swing.*;
+
+import reviews.FoodReviews;
+import reviews.HotelReviews;
+import reviews.RoomServiceRevews;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 
 /**
@@ -15,6 +22,8 @@ public class HotelParis {
     static JTextArea textArea;
     static JButton guestButton;
     static JButton managerButton,reviewButton;
+    static JLabel select;
+  	static JRadioButton food, rooms, hotel;
     static JTextField textField;
     public static void main (String args[]) {
         frame = new JFrame ();
@@ -61,13 +70,75 @@ public class HotelParis {
         //add button
         JButton contButton = new JButton("Continue");
         contButton.setEnabled(true);
+        //adding action listener
+        reviewButton.addActionListener(new ActionListener(){
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				createReviewGUI();
+			}
+		});
 
         pane.add(panel);
         frame.setVisible(true);
         frame.repaint();
 
     }//createMainGUI
+    /*
+     * created by Mandeep Kaur on 04/24/2016
+     */
+    public static void createReviewGUI(){
+		frame.setTitle("Hotel Paris Reviews");
+		frame.getContentPane().removeAll();
+		frame.getContentPane().repaint();
+      
+		select= new JLabel("Select one Option:");
+		hotel=new JRadioButton("Hotel");
+		food=new JRadioButton("Food");
+		rooms=new JRadioButton("Rooms");
+		pane=frame.getContentPane();
+		
+		hotel.addItemListener(new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				// TODO Auto-generated method stub
+				HotelReviews hotel=new HotelReviews();
+				hotel.printItems();
+			}		
+		});
+		
+		food.addItemListener(new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				// TODO Auto-generated method stub
+				FoodReviews food=new FoodReviews();
+				food.printItems();
+			}
+		});
+		rooms.addItemListener(new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				// TODO Auto-generated method stub
+				RoomServiceRevews room=new RoomServiceRevews();
+				room.printItems();
+			}		
+		});
+	
+		ButtonGroup group=new ButtonGroup();
+		group.add(food);
+		group.add(hotel);
+		group.add(rooms);
+		
+		pane.add(select);
+		pane.add(hotel);
+		pane.add(food);
+		pane.add(rooms);
+		
+		frame.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+		frame.setSize(800, 500);
+		frame.setVisible(true);
+	}
 /**
  * Created by Mandeep Kaur on 4/12/16.
  */

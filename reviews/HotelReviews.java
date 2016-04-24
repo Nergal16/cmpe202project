@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class HotelReviews extends MainReviews {
 
-	public HotelReviews(String item) {
+	public HotelReviews() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

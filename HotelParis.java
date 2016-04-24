@@ -13,7 +13,7 @@ public class HotelParis {
     static JPanel panel;
     static JTextArea textArea;
     static JButton guestButton;
-    static JButton managerButton;
+    static JButton managerButton, reviewButton;
     static JTextField textField;
     public static void main (String args[]) throws IOException, ClassNotFoundException {
         //set Look and feel
@@ -25,7 +25,7 @@ public class HotelParis {
 
         frame = new JFrame ();
         frame.setLocation(500, 100); //open in center of screen
-        frame.setSize(680, 400);
+        frame.setSize(680, 500);	//increased height of frame --Mandeep Kaur 04/24/2016
         frame.setResizable(false);
         frame.getContentPane().add(new BackgroundImage("Paris.jpg"));
         frame.setVisible(true);
@@ -37,7 +37,7 @@ public class HotelParis {
         if (pane != null) {
             pane.removeAll();
         }//if
-        frame.setTitle("Welcome to ChampsElysees Hotel");
+        frame.setTitle("Welcome to Hotel Paris");
         pane = frame.getContentPane(); //get content pane
         pane.setLayout(null); //apply null layout
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,12 +52,15 @@ public class HotelParis {
         //create two radio buttons and associate action listeners
         guestButton = new JButton("Guest");
         managerButton = new JButton("Manager");
+        //created a button to list reviews --Mandeep Kaur 04/24/2016
+        reviewButton = new JButton("View Reviews");
         guestButton.setBounds(175, 100, 310, 50);
         managerButton.setBounds(175, 200, 310, 50);
+        reviewButton.setBounds(175,300,310,50);
 
         frame.add(guestButton);
         frame.add(managerButton);
-
+        frame.add(reviewButton);
         //add button
         JButton contButton = new JButton("Continue");
         contButton.setEnabled(true);

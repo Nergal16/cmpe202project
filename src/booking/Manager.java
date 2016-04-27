@@ -7,8 +7,9 @@ public class Manager extends HotelObserver{
 	}
 	@Override
 	public void update(String str) {
+		System.out.println("manager notified");	 
 		// do nothing
-		action(str);
+	//	action(str);
 		
 	}
 

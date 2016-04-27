@@ -1,10 +1,6 @@
 
 import javax.swing.*;
 
-import reviews.FoodReviews;
-import reviews.HotelReviews;
-import reviews.RoomServiceRevews;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

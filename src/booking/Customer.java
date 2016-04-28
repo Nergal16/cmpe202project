@@ -8,14 +8,14 @@ public class Customer extends HotelObserver {
 	@Override
 	public void update(String str){
 	String todo=  str.equalsIgnoreCase("booked") ? "query to del room from list" : "add query to add room in availability list" ;
-		 
-	 action(str);
+	System.out.println("customer notified");	 
+	// action(str);
 		
 	}
 
 	@Override
 	public void action(String str) {
-		System.out.println("The room in Hoel Paris is" + str);
+		System.out.println("The room in Hotel Paris is" + str);
 		
 	}
 

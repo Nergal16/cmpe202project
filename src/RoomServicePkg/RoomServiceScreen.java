@@ -1,4 +1,4 @@
-package RoomServicePkg;
+package src.RoomServicePkg;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +30,7 @@ public class RoomServiceScreen {
     public  void setFrame (JFrame frame){
         this.frame = frame;
         frame.setLocation(500, 100); //open in center of screen
-        frame.setSize(680, 400);
+        frame.setSize(680, 1000);
         frame.setResizable(false);
         frame.setVisible(true);
     }

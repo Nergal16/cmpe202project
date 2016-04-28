@@ -1,4 +1,4 @@
-package booking;
+package src.booking;
 
 public interface Observers {
 	public abstract void update(String str);

@@ -1,3 +1,4 @@
+package src;
 //add view hotel function with GUI to display pictures of the hotel
 
 import com.intellij.uiDesigner.core.GridConstraints;

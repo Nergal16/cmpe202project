@@ -1,4 +1,4 @@
-package RoomServicePkg;
+package src.RoomServicePkg;
 
 import java.util.ArrayList;
 

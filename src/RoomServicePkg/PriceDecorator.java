@@ -1,4 +1,4 @@
-package RoomServicePkg;
+package src.RoomServicePkg;
 
 /**
  * Created by home on 4/19/2016.

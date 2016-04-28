@@ -1,10 +1,17 @@
-import RoomServicePkg.RoomServiceController;
-
+package src;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
+
+import reviews.FoodReviews;
+import reviews.HotelReviews;
+import reviews.RoomServiceRevews;
+import src.RoomServicePkg.RoomServiceController;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,12 +22,13 @@ import java.util.*;
  * Created by Nergal Issaie on 4/11/16.
  */
 public class HotelParis {
-    static Container pane;
-    static JFrame frame;
-    static JPanel panel;
+    public static Container pane;
+    public static JFrame frame;
+    public static JPanel panel;
     static JTextArea textArea;
     static JButton guestButton;
-    static JButton managerButton;
+    static JButton managerButton, reviewButton;
+	public static JButton backButton;
     static JTextField textField;
     static JTextArea textAreaFormat;
     static TreeMap<String, UserAccount> treeMapGuest; //user account
@@ -30,6 +38,9 @@ public class HotelParis {
     static GregorianCalendar gcalendar;
     static ArrayList<ChangeListener> changeListener;
     static int transactionID;
+    static JLabel select;
+ 	static JRadioButton food, rooms, hotel;
+
 
     public static void main (String args[]) throws IOException, ClassNotFoundException {
         textAreaFormat = new JTextArea(20, 40);
@@ -58,7 +69,7 @@ public class HotelParis {
 
         frame = new JFrame ();
         frame.setLocation(500, 100); //open in center of screen
-        frame.setSize(680, 400);
+        frame.setSize(680, 1000);	//increased height of frame --Mandeep Kaur 04/24/2016
         frame.setResizable(false);
         frame.getContentPane().add(new BackgroundImage("Paris.jpg"));
         frame.setVisible(true);
@@ -89,12 +100,22 @@ public class HotelParis {
         //create two radio buttons and associate action listeners
         guestButton = new JButton("Guest");
         managerButton = new JButton("Manager");
+        //created a button to list reviews --Mandeep Kaur 04/24/2016
+        reviewButton = new JButton("View Reviews");
         guestButton.setBounds(175, 100, 310, 50);
         managerButton.setBounds(175, 200, 310, 50);
+        reviewButton.setBounds(175,300,310,50);
+        reviewButton.addActionListener(new ActionListener(){
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				createReviewGUI();
+			}
+		});
         frame.add(guestButton);
         frame.add(managerButton);
-
+        frame.add(reviewButton);
         //add button
         JButton contButton = new JButton("Continue");
         contButton.setEnabled(true);
@@ -105,7 +126,75 @@ public class HotelParis {
         frame.repaint();
 
     }//createMainGUI
-/**
+    public static void createReviewGUI(){
+		frame.setTitle("Hotel Paris Reviews");
+		frame.getContentPane().removeAll();
+		frame.getContentPane().repaint();
+      
+		select= new JLabel("Select one Option:");
+		hotel=new JRadioButton("Hotel");
+		food=new JRadioButton("Food");
+		rooms=new JRadioButton("Rooms");
+		backButton=new JButton("Go Back");
+		pane=frame.getContentPane();
+		
+		hotel.addItemListener(new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				// TODO Auto-generated method stub
+				HotelReviews hotel=new HotelReviews();
+				hotel.printItems();
+			}		
+		});
+		
+		food.addItemListener(new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				// TODO Auto-generated method stub
+				FoodReviews food=new FoodReviews();
+				food.printItems();
+			}
+		});
+		rooms.addItemListener(new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				// TODO Auto-generated method stub
+				RoomServiceRevews room=new RoomServiceRevews();
+				room.printItems();
+			}		
+		});
+		
+		backButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				createMainGUI();
+			}
+			
+		});
+	
+		ButtonGroup group=new ButtonGroup();
+		group.add(food);
+		group.add(hotel);
+		group.add(rooms);
+		
+		pane.add(select);
+		pane.add(hotel);
+		pane.add(food);
+		pane.add(rooms);
+		
+		
+		
+		pane.add(backButton);
+		
+		backButton.setBounds(175,500,310,50);
+		frame.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+		frame.setVisible(true);
+	}
+    
+    
+    /**
  * Created by Mandeep Kaur on 4/12/16.
  */
     public static void createSignInGUI() {

@@ -1,4 +1,4 @@
-package booking;
+package src.booking;
 
 public class HotelObserver implements Observers{
 

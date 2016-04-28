@@ -1,4 +1,4 @@
-package booking;
+package src.booking;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;

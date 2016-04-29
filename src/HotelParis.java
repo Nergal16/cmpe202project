@@ -5,16 +5,13 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.*;
 
 /**
  * Created by Nergal Issaie on 4/11/16.
  */
-public class HotelParis {
+public class HotelParis implements Serializable {
     static Container pane;
     static JFrame frame;
     static JPanel panel;
@@ -30,6 +27,10 @@ public class HotelParis {
     static GregorianCalendar gcalendar;
     static ArrayList<ChangeListener> changeListener;
     static int transactionID;
+    static JScrollPane scrollBar; //textArea scrollbar
+    static InvoicePreparer invoice;
+    static int nowTransactionID;
+    static String userID;
 
     public static void main (String args[]) throws IOException, ClassNotFoundException {
         textAreaFormat = new JTextArea(20, 40);
@@ -357,5 +358,174 @@ public class HotelParis {
         catch (IOException | ClassNotFoundException e) {}
 
     }//readFromDisk
+
+    /**
+     * creates a GUI to ask user to select a receipt format
+     */
+    public static void createMainReceiptGUI() {
+        //clear pane if not null
+        if (pane != null) {
+            pane.removeAll();
+        }//if
+        frame.setTitle("Main Receipt");
+        pane = frame.getContentPane(); //get content pane
+        pane.setLayout(null); //apply null layout
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        panel = new JPanel();
+
+        textArea = new JTextArea();
+        JLabel textLabel = new JLabel("Please select a receipt format:");
+        textArea.setEnabled(false);
+        frame.add(textLabel);
+        textLabel.setBounds(265, 50, 310, 25);
+
+        //create two radio buttons and associate action listeners
+        JButton SimpleBut = new JButton("Simple Format Receipt");
+        JButton ComprehensiveBut = new JButton("Comprehensive Format Receipt");
+        //back button
+        JButton backButt = new JButton("Back");
+
+        SimpleBut.setBounds(175, 100, 310, 50);
+        ComprehensiveBut.setBounds(175, 200, 310, 50);
+        backButt.setBounds(10, 300, 75, 50);
+        frame.setSize(680, 400);
+
+        frame.add(SimpleBut);
+        frame.add(ComprehensiveBut);
+        frame.add(backButt);
+        pane.add(panel);
+        frame.setVisible(true);
+        frame.repaint();
+
+        //set actionListener for guest button
+        SimpleBut.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        //simple receipt
+                        simpleFormatGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //set actionListener for manager button
+        ComprehensiveBut.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        //comprehensive receipt
+                        comprehensiveFormatGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //back button
+        backButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createReservationOrViewGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        frame.setVisible(true);
+        frame.repaint();
+
+    }//createMainReceiptGUI
+
+    /**
+     * creates the GUI for the comprehensive receipt
+     */
+    public static void comprehensiveFormatGUI() {
+        if (pane != null) {
+            pane.removeAll();
+        }//if
+        frame.setTitle("Comprehensive Receipt");
+        pane = frame.getContentPane(); //Get content pane
+        pane.setLayout(null); //Apply null layout
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Close when X is clicked
+        panel = new JPanel();
+
+        invoice = new InvoicePreparer(new StrategyComprehensiveReceipt(), treeMapGuest, userID);
+        String resultA = invoice.executeStrategy(transactionID, nowTransactionID);
+        JButton backBut = new JButton("Back");
+        textAreaFormat.setText(resultA);
+        textAreaFormat.setEditable(false);
+
+        //create Scrollbar for textArea
+        scrollBar = new JScrollPane(textAreaFormat,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollBar.setEnabled(true);
+        scrollBar.setVisible(true);
+        scrollBar.setBounds(5,5,665, 695);
+        frame.setBounds(5, 5, 680, 800);
+        textAreaFormat.setBounds(10,10,660,700);
+        backBut.setBounds(285,708,100,50);
+        frame.add(scrollBar);
+
+        backBut.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent event){
+                createMainReceiptGUI();
+            }
+        });
+
+        frame.add(backBut);
+        frame.add(scrollBar);
+        frame.setVisible(true);
+        frame.repaint();
+        frame.setLocation(500, 100); //open in center of screen
+
+    }//comprehensiveFormatGUI
+
+    /**
+     * creates the GUI for the simple receipt
+     */
+    public static void simpleFormatGUI() {
+        if (pane != null) {
+            pane.removeAll();
+        }//if
+
+        frame.setTitle("Simple Receipt");
+        pane = frame.getContentPane(); //Get content pane
+        pane.setLayout(null); //Apply null layout
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Close when X is clicked
+        panel = new JPanel();
+
+        invoice = new InvoicePreparer(new StrategySimpleReceipt(), treeMapGuest, userID);
+        String resultA = invoice.executeStrategy(transactionID, nowTransactionID);
+        JButton backBut = new JButton("Back");
+        textAreaFormat.setText(resultA);
+        textAreaFormat.setEditable(false);
+
+        //create Scrollbar for textArea
+        scrollBar = new JScrollPane(textAreaFormat, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollBar.setEnabled(true);
+        scrollBar.setVisible(true);
+        scrollBar.setBounds(5,5,665, 695);
+        frame.setBounds(5, 5, 680, 800);
+        textAreaFormat.setBounds(10,10,660,700);
+        backBut.setBounds(285,708,100,50);
+        frame.add(scrollBar);
+
+        backBut.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent event){
+                createMainReceiptGUI();
+            }
+        });
+
+        frame.add(backBut);
+        frame.add(scrollBar);
+        frame.setVisible(true);
+        frame.repaint();
+        frame.setLocation(500, 100); //open in center of screen
+
+    }//simpleFormatGUI
     
 }

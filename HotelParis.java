@@ -17,7 +17,7 @@ public class HotelParis {
     static JPanel panel;
     static JTextArea textArea;
     static JButton guestButton;
-    static JButton managerButton,reviewButton;
+    static JButton managerButton,reviewButton, backButton;
     static JLabel select;
   	static JRadioButton food, rooms, hotel;
     static JTextField textField;
@@ -93,8 +93,18 @@ public class HotelParis {
 		hotel=new JRadioButton("Hotel");
 		food=new JRadioButton("Food");
 		rooms=new JRadioButton("Rooms");
+		backButton=new JButton("Go Back");
+		
 		pane=frame.getContentPane();
 		
+		 backButton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					createMainGUI();
+				}
+			});
 		hotel.addItemListener(new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
@@ -130,6 +140,8 @@ public class HotelParis {
 		pane.add(hotel);
 		pane.add(food);
 		pane.add(rooms);
+		
+		pane.add(backButton);
 		
 		frame.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 		frame.setSize(800, 500);

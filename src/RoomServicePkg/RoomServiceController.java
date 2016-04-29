@@ -12,13 +12,23 @@ public class RoomServiceController {
     public static RoomServiceController getInstance() {
         return ourInstance;
     }
+    private RoomServiceControllerState burgerState;
+    private RoomServiceControllerState saladState;
+    private RoomServiceControllerState noEntre;
+    private RoomServiceControllerState currentState;
 
     private RoomServiceController() {
+        burgerState = new BurgerState(this);
+        saladState = new SaladState(this);
+        // start in burger state by default;
+        currentState = noEntre;
     }
     RoomService currentOrder;
     ArrayList<RoomService> burgerList = null;
+    ArrayList<RoomService> saladList = null;
     Integer baconCnt = 0;
     Integer eggCnt = 0;
+    Integer mushCnt = 0;
     Integer fishCnt = 0;
     Double bill = 0.0;
     PriceDecorator billDecorator = null;
@@ -38,7 +48,19 @@ public class RoomServiceController {
         if (burgerList == null){
             burgerList = new ArrayList<RoomService>();
         }
-        burgerList.add(new MominetteBurger("MominetteBurger", 11.1));
+        burgerList.add(new MominetteBurger("MominetteBurger", 12.0));
+        currentState = burgerState;
+    }
+
+    public void GrilledAppleSalad(){
+        if (saladList == null){
+            saladList = new ArrayList<RoomService>();
+        }
+        saladList.add(new GrilledAppleSalad("GrilledAppleSalad", 11.0));
+        currentState = saladState;
+    }
+    public void addMushroom(){
+
     }
 
     public void addBacon(){

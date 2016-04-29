@@ -45,6 +45,7 @@ public class RoomServiceScreen {
         if (pane != null) {
             pane.removeAll();
         }//if
+        frame.setSize(780, 500);
         frame.setTitle("Room Service Menu");
         pane = frame.getContentPane(); //get content pane
         pane.setLayout(null); //apply null layout

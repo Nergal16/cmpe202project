@@ -1,6 +1,7 @@
 import RoomServicePkg.RoomServiceController;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -44,6 +45,10 @@ public class HotelParis implements Serializable {
     static Date checkInDate;
     static Date checkOutDate;
     static int roomTypeSelection = 1;
+    static JTextArea textAreaGuest;
+    static boolean dateCheckIn = false;
+    static boolean dateCheckOut = false;
+    static String label = "";
 
     public static void main (String args[]) throws IOException, ClassNotFoundException {
         textAreaFormat = new JTextArea(20, 40);
@@ -513,9 +518,347 @@ public class HotelParis implements Serializable {
                 }//ActionListener
         );
     }
+
+    /**
+     * creates GUI for reservation with all ActionListeners components
+     */
     public static void createMakeReservationGUI() {
-    	//code for reservation process
+        checkInDate = null;
+        checkOutDate = null;
+        pane.removeAll();
+
+        final JButton confirmButt = new JButton("Confirmed");
+        confirmButt.setEnabled(false);
+        JButton transactionDoneButt = new JButton("Transaction Done");
+        JButton backButt = new JButton ("Home");
+        final JButton luxButt = new JButton ("$200");
+        final JButton econButt = new JButton ("$100");
+
+        JLabel checkInLabel = new JLabel("Check-in:");
+        JLabel checkOutLabel = new JLabel("Check-out:");
+        JLabel roomType = new JLabel("Room type:");
+        final JLabel errorMessage = new JLabel();
+
+        textAreaGuest = new JTextArea();
+        textAreaGuest.setEnabled(false);
+        textAreaGuest.setText("Room information will be printed here as \n"
+                + "you select the check-in and check-out \ndates and room type.");
+
+        final JTextField checkInTextField = new JTextField(10);
+        final JTextField checkOutTextField = new JTextField(10);
+
+        frame.setTitle("ChampsElysees Hotel - Make Transaction");
+        pane = frame.getContentPane(); //Get content pane
+        pane.setLayout(null); //Apply null layout
+
+        errorMessage.setBounds(25, 200, 200, 50);
+        checkInLabel.setBounds(50, 40, 75, 25);
+        checkOutLabel.setBounds(150, 40, 75, 25);
+        confirmButt.setBounds(280, 300, 150, 50);
+        transactionDoneButt.setBounds(480, 300, 150, 50);
+        backButt.setBounds(10, 300, 75, 50);
+        checkInTextField.setBounds(50, 60, 80, 25);
+        checkOutTextField.setBounds(150, 60, 80, 25);
+        roomType.setBounds(50, 100, 80, 25);
+        luxButt.setBounds(50, 120, 80, 50);
+        econButt.setBounds(150, 120, 80, 50);
+        textAreaGuest.setBounds(280, 40, 350, 250);
+
+        //ChangeListener
+        ChangeListener listener = new
+                ChangeListener() {
+                    @Override
+                    public void stateChanged(ChangeEvent event) {
+                        int arr[] = model.calculateAvailableRooms(checkInDate, checkOutDate);
+                        String textToDisplay = calculateMessage(arr);
+                        textAreaGuest.setText(textToDisplay);
+                        frame.repaint();
+                    }};
+        model.addChangeListener(listener);
+
+
+        //add listener to text field -- serves as Controller in MVC pattern
+        checkInTextField.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        String dateStr = "";
+                        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                        formatter.setLenient(false);
+                        if ((checkInTextField.getText().trim().length() > 0)) {
+                            dateStr = checkInTextField.getText();
+                            try {
+                                checkInDate = formatter.parse(dateStr);
+                                gcalendar.setTime(checkInDate);
+                                gcalendar.set(Calendar.HOUR_OF_DAY, 0);
+                                gcalendar.set(Calendar.MINUTE, 0);
+                                gcalendar.set(Calendar.SECOND, 0);
+                                gcalendar.set(Calendar.MILLISECOND, 0);
+                                checkInDate = gcalendar.getTime();
+                                dateCheckIn = true;
+                            } catch (Exception ex) {dateCheckIn = false;}//try-catch
+                        }//if
+
+                        frame.repaint();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //add listener to text field -- serves as Controller in MVC pattern
+        checkOutTextField.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        String dateStr = "";
+
+                        dateStr = checkOutTextField.getText();
+                        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                        formatter.setLenient(false);
+                        if ((checkInTextField.getText().trim().length() > 0)) {
+                            dateStr = checkOutTextField.getText();
+                            try {
+                                checkOutDate = formatter.parse(dateStr);
+                                gcalendar.setTime(checkOutDate);
+                                gcalendar.set(Calendar.HOUR_OF_DAY, 0);
+                                gcalendar.set(Calendar.MINUTE, 0);
+                                gcalendar.set(Calendar.SECOND, 0);
+                                gcalendar.set(Calendar.MILLISECOND, 0);
+                                checkOutDate = gcalendar.getTime();
+                                dateCheckOut = true;
+                            } catch (Exception ex) {dateCheckOut = false;}//try-catch
+                        }//if
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //add action listener -- serves as Controller in MVC pattern
+        luxButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        //luxury room
+                        //set today's date to compare against user selection dats
+                        Date date = new Date();
+                        GregorianCalendar g = new GregorianCalendar();
+                        g.setTime(date);
+                        g.set(Calendar.HOUR_OF_DAY, 0);
+                        g.set(Calendar.MINUTE, 0);
+                        g.set(Calendar.SECOND, 0);
+                        g.set(Calendar.MILLISECOND, 0);
+                        date = g.getTime();
+
+                        luxButt.setBackground(Color.blue);
+                        econButt.setBackground(new JButton().getBackground());
+                        roomTypeSelection = 2; // 2 is luxury
+                        String mess = "";
+                        boolean b = true;
+                        if (dateCheckIn == false || dateCheckOut == false) {
+                            if (dateCheckIn == false)  mess = "Sorry! Please enter "
+                                    + "a valid Check-in date!\n";
+                            if (dateCheckOut == false) mess += "Sorry! Please enter "
+                                    + "a valid Check-out date!";
+                            textAreaGuest.setText(mess);
+                            b = false;
+                        }//if
+
+                        if (dateCheckIn && checkInDate != null && checkOutDate!= null
+                                && checkInDate.before(date)
+                                && (!checkInDate.equals(date))) {
+                            textAreaGuest.setText("Sorry! Check-in date cannot "
+                                    + "be prior\nto today's date.\n\nPlease "
+                                    + "try again!");
+                            b = false;
+                        }//if
+
+                        if (dateCheckOut && checkInDate != null && checkOutDate!= null
+                                && checkOutDate.before(date)) {
+                            textAreaGuest.setText("Sorry! Check-out date cannot be "
+                                    + "prior\nto today's date.\n\nPlease try again!");
+                            b = false;
+                        }//if
+
+                        else if (b && checkInDate != null && checkOutDate != null
+                                && checkInDate.before(checkOutDate)
+                                && (!checkInDate.before(date))
+                                && (!checkInDate.equals(checkOutDate))) {
+                            confirmButt.setEnabled(true);
+                            int arr[] = model.calculateAvailableRooms(checkInDate, checkOutDate);
+                            String textToDisplay = calculateMessage(arr);
+                            textAreaGuest.setText(textToDisplay);
+                            b = false;
+                        }//else-if
+
+                        if (b) {
+                            textAreaGuest.setText("Sorry! Check-out date cannot "
+                                    + "be prior\nor equal to Check-in date."
+                                    + "\n\nPlease try again!");
+                        }//if
+                    }});
+
+        //add action listener -- serves as Controller in MVC pattern
+        //textAreaGuest is updated upon changes -- serves as View in MVC
+        econButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        //set today's date to compare against user selection dats
+                        Date date = new Date();
+                        GregorianCalendar g = new GregorianCalendar();
+                        g.setTime(date);
+                        g.set(Calendar.HOUR_OF_DAY, 0);
+                        g.set(Calendar.MINUTE, 0);
+                        g.set(Calendar.SECOND, 0);
+                        g.set(Calendar.MILLISECOND, 0);
+                        date = g.getTime();
+
+                        econButt.setBackground(Color.blue);
+                        luxButt.setBackground(new JButton().getBackground());
+                        roomTypeSelection = 1; // 1 is economy
+                        String mess = "";
+                        boolean b = true;
+                        if (dateCheckIn == false || dateCheckOut == false) {
+                            if (dateCheckIn == false)  mess = "Sorry! Please enter "
+                                    + "a valid Check-in date!\n";
+                            if (dateCheckOut == false) mess += "Sorry! Please enter "
+                                    + "a valid Check-out date!";
+                            textAreaGuest.setText(mess);
+                            b = false;
+                        }//if
+
+                        if (dateCheckIn && checkInDate != null && checkOutDate!= null
+                                && checkInDate.before(date)
+                                && (!checkInDate.equals(date))) {
+                            textAreaGuest.setText("Sorry! Check-in date cannot be "
+                                    + "prior\nto today's date.\n\nPlease try again!");
+                            b = false;
+                        }//if
+
+                        if (dateCheckOut && checkInDate != null && checkOutDate!= null
+                                && checkOutDate.before(date)) {
+                            textAreaGuest.setText("Sorry! Check-out date cannot be "
+                                    + "prior\nto today's date.\n\nPlease try again!");
+                            b = false;
+                        }//if
+
+                        else if (b && checkInDate != null && checkOutDate!= null
+                                && checkInDate.before(checkOutDate)
+                                && (!checkInDate.before(date))
+                                && (!checkInDate.equals(checkOutDate))) {
+                            confirmButt.setEnabled(true);
+                            int arr[] = model.calculateAvailableRooms(checkInDate, checkOutDate);
+                            String textToDisplay = calculateMessage(arr);
+                            textAreaGuest.setText(textToDisplay);
+                            b = false;
+                        }//else-if
+
+                        if (b) {
+                            textAreaGuest.setText("Sorry! Check-out date cannot be "
+                                    + "prior\nor equal to Check-in date."
+                                    + "\n\nPlease try again!");
+                        }//if
+                    }});
+
+        //add action listener -- serves as Controller in MVC pattern
+        //textAreaGuest is updated upon changes -- serves as View in MVC
+        confirmButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        //confirm transaction
+                        int arr[] = model.calculateAvailableRooms(checkInDate, checkOutDate);
+                        Date date = new Date();
+                        GregorianCalendar g = new GregorianCalendar();
+                        g.setTime(date);
+                        g.set(Calendar.HOUR_OF_DAY, 0);
+                        g.set(Calendar.MINUTE, 0);
+                        g.set(Calendar.SECOND, 0);
+                        g.set(Calendar.MILLISECOND, 0);
+                        date = g.getTime();
+
+                        //check if there is available room to reserve
+                        int count = 0;
+                        int lowerRange=0;
+                        int uppeRange =0;
+                        if (roomTypeSelection == 1) {lowerRange=0; uppeRange=10;}
+                        if (roomTypeSelection == 2) {lowerRange=10; uppeRange=20;}
+                        for (int i = lowerRange; i < uppeRange; i++) {
+                            if (treeMapRoom.isEmpty() || treeMapRoom.get(checkInDate) == null
+                                    || treeMapRoom.get(checkInDate).getRoom().get(i) == true)
+                                count++;
+                        }//for
+                        boolean flag = true;
+                        long duration  = checkOutDate.getTime() - checkInDate.getTime();
+                        int diffInDays = (int)TimeUnit.MILLISECONDS.toDays(duration) + 1;
+                        if (diffInDays > 60) {label = "Sorry! You cannot reserve a "
+                                + "room for more than 60 nights!"; flag = false;}
+                        else if (checkInDate.after(checkOutDate)) {
+                            label = "Sorry! Check-out date cannot be prior to "
+                                    + "check-in date!";
+                            flag = false;
+                        }//else-if
+
+                        else if (checkInDate.before(date)) {
+                            label = "Sorry! You cannot reserve room prior to today's date!";
+                            flag = false;
+                        }//else-if
+                        else if (count == 0){
+                            label = "Sorry! All rooms for this type are sold out!\n "
+                                    + "Please try another room type!";
+                            flag = false;
+                        }//else-if
+
+                        if (flag) {
+                            model.setUserID(userID);
+                            nowTransactionID = (int) Math.floor(Math.random() * 900000000) + 100000000;
+                            model.setThisTransactionID(nowTransactionID);
+                            model.reserveRoom(arr, checkInDate, checkOutDate, roomTypeSelection);
+                            createContinueTransactionGUI();
+                        }//if
+                        else {
+                            createNoRoomAvailableGUI(label);
+                        }
+                    }});
+
+        //add action listener
+        transactionDoneButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        //transaction done
+                        createMainReceiptGUI();
+                    }});
+
+        //associate go back to its button
+        backButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createMainGUI();
+                    }});
+
+        frame.add(errorMessage);
+        frame.add(confirmButt);
+        frame.add(transactionDoneButt);
+        frame.add(backButt);
+        frame.add(luxButt);
+        frame.add(econButt);
+        frame.add(checkInLabel);
+        frame.add(checkOutLabel);
+        frame.add(checkInTextField);
+        frame.add(checkOutTextField);
+        frame.add(roomType);
+        frame.add(textAreaGuest);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.repaint();
     	
+    }
+
+    public static void createContinueTransactionGUI() {
+        //TODO implement this
+    }
+
+    public static void createNoRoomAvailableGUI(String text) {
+        //TODO implement this
     }
 
     /**

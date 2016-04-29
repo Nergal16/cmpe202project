@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +41,9 @@ public class HotelParis implements Serializable {
     static String userID;
     static DefaultListModel defaultListModel;
     static JList list;
+    static Date checkInDate;
+    static Date checkOutDate;
+    static int roomTypeSelection = 1;
 
     public static void main (String args[]) throws IOException, ClassNotFoundException {
         textAreaFormat = new JTextArea(20, 40);
@@ -433,6 +437,41 @@ public class HotelParis implements Serializable {
         frame.revalidate();
 
     }//createViewOrCancelGUI
+
+    /**
+     * conducts the info messages that needs to be displayed to user
+     * @param count the list of available rooms
+     * @return the info message to be displayed on GUI
+     */
+    public static String calculateMessage (int[] count) {
+        long duration  = checkOutDate.getTime() - checkInDate.getTime();
+        int diffInDays= (int) TimeUnit.MILLISECONDS.toDays(duration) + 1;
+        int lowerRange = 0;
+        int upperRange = 20;
+        int addition = 0;
+
+        if (roomTypeSelection == 1) {
+            lowerRange = 0;
+            upperRange = 10;
+            addition = 100;
+        }//if
+
+        if (roomTypeSelection == 2) {
+            lowerRange = 10;
+            upperRange = 20;
+            addition = 190;
+        }//if
+
+        String message = "Available rooms: \n";
+        //calculate available rooms
+        for (int i = lowerRange; i < upperRange; i++)
+            if (count[i] == diffInDays) {
+                message += "\t" + (addition + i) + "\n";
+            }//if
+
+        return message;
+
+    }//calculateMessage
 
     /**
      * GUI for guest menu is created

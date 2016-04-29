@@ -6,8 +6,9 @@ package RoomServicePkg;
 
 // Interface for Component class in Composite pattern for RoomServicePkg
 public interface RoomService {
+    public Double getPrice();
     public void printItems();
     public void addChild(RoomService item);
     public void removeChild(RoomService item);
-    public void getChild(int childIndex);
+    public RoomService getChild(int childIndex);
 }

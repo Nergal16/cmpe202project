@@ -853,8 +853,59 @@ public class HotelParis implements Serializable {
     	
     }
 
+    /**
+     * creates a GUI to help user to continue the reservation
+     */
     public static void createContinueTransactionGUI() {
-        //TODO implement this
+        //clear pane if not null
+        if (pane != null) {
+            pane.removeAll();
+        }//if
+        frame.setTitle("Confirmation of Reservation");
+        pane = frame.getContentPane(); //Get content pane
+        pane.setLayout(null); //Apply null layout
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        panel = new JPanel();
+
+        textArea = new JTextArea();
+        JLabel textLabel = new JLabel("Please select an option:");
+        textArea.setEnabled(false);
+        frame.add(textLabel);
+        textLabel.setBounds(275, 50, 310, 25);
+
+        //create two radio buttons and associate action listeners
+        JButton continueBut = new JButton("Make another reservaion");
+        JButton doneBut = new JButton("Transaction Done");
+        continueBut.setBounds(175, 100, 310, 50);
+        doneBut.setBounds(175, 200, 310, 50);
+
+        frame.add(continueBut);
+        frame.add(doneBut);
+
+        //set actionListener for guest button
+        continueBut.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createMakeReservationGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //set actionListener for manager button
+        doneBut.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        //go to receipts GUI
+                        createMainReceiptGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        pane.add(panel);
+        frame.setVisible(true);
+        frame.repaint();
     }
 
     public static void createNoRoomAvailableGUI(String text) {

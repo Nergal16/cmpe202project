@@ -2,11 +2,18 @@ import RoomServicePkg.RoomServiceController;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Nergal Issaie on 4/11/16.
@@ -31,6 +38,8 @@ public class HotelParis implements Serializable {
     static InvoicePreparer invoice;
     static int nowTransactionID;
     static String userID;
+    static DefaultListModel defaultListModel;
+    static JList list;
 
     public static void main (String args[]) throws IOException, ClassNotFoundException {
         textAreaFormat = new JTextArea(20, 40);
@@ -185,7 +194,7 @@ public class HotelParis implements Serializable {
         makeReservationButton.setBounds(175, 100, 310, 50);
         viewOrCanceltButton.setBounds(175, 200, 310, 50);
         backButton.setBounds(10, 300, 75, 50);
-      //adding a button click listener
+
         viewOrCanceltButton.addActionListener(
             new ActionListener() {
                 @Override
@@ -195,8 +204,235 @@ public class HotelParis implements Serializable {
             }//ActionListener
         );
 
-        
+        //set actionListener for button
+        makeReservationButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createMakeReservationGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //associate view/cancel functionality with its button
+        viewOrCanceltButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        ;
+                        frame.repaint();
+                        createViewOrCancelGUI();
+                        frame.repaint();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //associate go back function to its button
+        backButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createMainGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        frame.repaint();
+
+
     }//createReservationOrViewGUI
+
+    /**
+     * creates GUI for view/cancel reservations
+     */
+    public static void createViewOrCancelGUI() {
+        pane.removeAll();
+
+        final JButton cancelButt = new JButton("Cancel Reservation");
+        JButton homeButt = new JButton("Home");
+        JButton backButt = new JButton ("Back");
+
+        JLabel label1 = new JLabel("Select a reservation you would like to cancel:");
+        JLabel label2 = new JLabel("Then press 'Cancel Reservation' button.");
+        final JLabel errorMessage = new JLabel();
+
+        frame.setTitle("Hotel Paris - Cancel or View Reservations");
+
+        errorMessage.setBounds(25, 200, 200, 50);
+        label1.setBounds(15, 40, 300, 25);
+        label2.setBounds(15, 70, 300, 25);
+        cancelButt.setBounds(280, 300, 150, 50);
+        homeButt.setBounds(480, 300, 150, 50);
+        backButt.setBounds(10, 300, 75, 50);
+
+        //initialize a list of reserved items
+        defaultListModel = new DefaultListModel();
+        String message = "";
+        String enterDate = "";
+        String exitDate = "";
+        DateFormat fromatter;
+        //file-in the List from treeMapGuest
+        int theTransactionID = 0;
+        if (!treeMapGuest.isEmpty()) {
+            //if user are in the system
+            if (treeMapGuest.containsKey(userID)) {
+                int i = 0;
+                //while user have reservations
+                while (i < treeMapGuest.get(userID).enterDate.size()) {
+                    if (theTransactionID !=
+                            treeMapGuest.get(userID).nowTransactionID.get(i)) {
+                        theTransactionID =
+                                treeMapGuest.get(userID).nowTransactionID.get(i);
+                        //format the date object as string
+                        fromatter = new SimpleDateFormat("MM/dd/yyyy");
+                        enterDate = fromatter.format(treeMapGuest.get(userID).getEnterDate(i));
+                        exitDate = fromatter.format(treeMapGuest.get(userID).getExitDate(i));
+                        message = "Room#: "
+                                + treeMapGuest.get(userID).getRoomNumber(i)
+                                + ",  Check-in: " + enterDate
+                                + ",  Check-out: " + exitDate;
+                        defaultListModel.addElement(message);
+                    }//if
+                    i++;
+                }//while
+            }//if
+        }//if
+
+        list = new JList(defaultListModel);
+        list.setBounds(280, 25, 370, 250);
+        list.setVisible(true);
+
+        JScrollPane listScroller = new JScrollPane(list);
+        listScroller.setVisible(true);
+        listScroller.setBounds(280, 25, 370, 250);
+        listScroller.repaint();
+        cancelButt.setEnabled(false); //disable the cancel button as default
+        //enable cancel button only if user selects a reservation
+        list.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent lse) {
+                cancelButt.setEnabled(true);
+            }//valueChanged
+        });
+
+        //remove/cancel reservation from both JList and internal data structure
+        cancelButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        //remove room from both treeMapRoom and treeMapGuest
+
+                        int index = list.getSelectedIndex(); //index of item to be remvoed
+
+                        //make sure there is at least one item in JList before delete
+                        if (index != -1) {
+                            String str = defaultListModel.get(index).toString();
+                            int roomNum = Integer.parseInt(str.substring(7, 10));
+                            String in = str.substring(23, 33);
+                            String out = str.substring(47, 57);
+                            DateFormat outputFormatter = new SimpleDateFormat("MM/dd/yyyy");
+                            Date inDate = null;
+                            Date outDate = null;
+                            try {
+                                inDate = outputFormatter.parse(in);
+                                outDate = outputFormatter.parse(out);
+                            } catch (ParseException ex) {
+                                Logger.getLogger(HotelParis.class.getName()).log(Level.SEVERE, null, ex);
+                            }//try-catch
+
+                            //remove from treeMapRoom
+                            Date copyInDate = inDate;
+                            int userRoomAdd = 0;
+                            if (roomNum > 99 && roomNum < 200) userRoomAdd = 100;
+                            if (roomNum > 199) userRoomAdd = 190;
+                            int i = 0;
+
+                            //handle the transactions with multi-days
+                            while (treeMapRoom.get(copyInDate)!=null
+                                    && i < treeMapRoom.get(copyInDate).roomArr.size()) {
+                                //check date, user ID and room number before deleting
+                                if (treeMapRoom.get(inDate).getRoom().get(i) == false
+                                        && treeMapRoom.get(inDate).getUser().get(i).equals(userID)
+                                        && (userRoomAdd + i) == roomNum ){
+
+                                    //handle all days within one transaction
+                                    while (!(copyInDate).equals(outDate)) {
+                                        treeMapRoom.get(copyInDate).roomArr.set(i, true);
+                                        treeMapRoom.get(copyInDate).userIDArr.set(i, "");
+
+                                        //set the calendar to increment dates
+                                        GregorianCalendar g = new GregorianCalendar();
+                                        g.setTime(copyInDate);
+                                        g.add(Calendar.DAY_OF_YEAR, 1); //increment day
+                                        copyInDate = g.getTime();
+                                    }//while
+                                }//if
+                                i++;
+                            }//while
+
+                            //remove from treeMapGuest
+                            i = 0;
+                            i = treeMapGuest.get(userID).enterDate.size() - 1;
+                            while (i >= 0) {
+                                //check date, user ID, and room number
+                                if (treeMapGuest.get(userID).getEnterDate(i).equals(inDate)
+                                        && treeMapGuest.get(userID).getExitDate(i).equals(outDate)
+                                        && treeMapGuest.get(userID).getRoomNumber(i) == roomNum) {
+                                    treeMapGuest.get(userID).enterDate.remove(i);
+                                    treeMapGuest.get(userID).exitDate.remove(i);
+                                    treeMapGuest.get(userID).roomNumber.remove(i);
+                                    treeMapGuest.get(userID).nowTransactionID.remove(i);
+                                    treeMapGuest.get(userID).price.remove(i);
+                                    treeMapGuest.get(userID).transactionID.remove(i);
+                                }//if
+                                i--;
+                            }//while
+
+                            //remove item from the JList
+                            defaultListModel.remove(index);
+                            int size = defaultListModel.getSize();
+
+                            if (size == 0) { //nobody is left, disable the cancel button
+                                cancelButt.setEnabled(false);
+                            }//if
+                            else { //select an index.
+                                if (index == defaultListModel.getSize()) {
+                                    //removed item in last position
+                                    index--;
+                                }//if
+                                list.setSelectedIndex(index);
+                                list.ensureIndexIsVisible(index);
+                            }//else
+                        }//if
+                    }});
+
+        //associate go home to its button
+        homeButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createMainGUI(); //main menu
+                    }});
+
+        //associate go back to its button
+        backButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createReservationOrViewGUI(); //create/view GUI
+                    }});
+
+        frame.add(errorMessage);
+        frame.add(cancelButt);
+        frame.add(homeButt);
+        frame.add(backButt);
+        frame.add(label1);
+        frame.add(label2);
+        frame.add(listScroller);
+        frame.repaint();
+        frame.revalidate();
+
+    }//createViewOrCancelGUI
 
     /**
      * GUI for guest menu is created

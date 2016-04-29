@@ -2,28 +2,28 @@ package booking;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-
-import javax.swing.JTextArea;
 
 public class StandardRoom implements RoomVariety{
 
-	public StandardRoom(JTextArea textAreaGuest) throws SQLException {
-		List<Integer> list = available();
-	
-		//textAreaGuest.setText(available());
+	public StandardRoom() throws SQLException {
+		String list = available();
+		System.out.println("list is"+list);
+		new BookingGUI(list);
 	}
 
 	@Override
-	public List<Integer> available() throws SQLException {
+	public String available() throws SQLException {
 		String strlist="";
-		String query= "Select room_number from availableroom where room_type='FamilyRoom'";
+		String query= "Select room_number from availableroom where room_type='StandardRoom'";
 		ResultSet res= new DatabaseConnector().query(query);
 		while(res.next())
-			{list.add(res.getInt("room_number"));
-			// strlist = strlist.append("")
-			}
-		return list;
+			{
+			list.add(res.getInt("room_number"));
+		strlist += "\n"+res.getInt("room_number");
+		
+		}
+		System.out.println("strlist"+strlist);	
+		return strlist;
 	
 		
 	}

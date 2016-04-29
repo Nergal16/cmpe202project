@@ -3,6 +3,7 @@ package booking;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -19,12 +20,29 @@ import org.jdatepicker.impl.UtilDateModel;
 
 public class BookingGUI {
 	
-	// intergration required from the other modules..
-	    static JTextArea textAreaGuest;
-	    static JFrame frame;
+	// integration required from the other modules..
+	    static JTextArea textAreaGuest = new JTextArea();
+	    static JFrame frame =new JFrame ();
 	   static Container pane;
+	
+	   public BookingGUI(String str){
+		   frame.repaint();
+	        textAreaGuest.setText(str);
+		   System.out.println("pls yr"+textAreaGuest.getText());
+		  frame.repaint();
+	   }
+	   public BookingGUI() {
+		// TODO Auto-generated constructor stub
+	}
+	   public void makeBookingGUI(){
+		 
+		  // BookingGUI obj = this;
+		   createReservationOrViewGUI();
+	   }
 	   public static void createReservationOrViewGUI() {
-		   frame = new JFrame ();
+		   if (pane != null) {
+	            pane.removeAll();
+	        }//if
 	       frame.setLocation(500, 100); //open in center of screen
 	       frame.setSize(680, 400);
 	       frame.setResizable(false);
@@ -34,7 +52,7 @@ public class BookingGUI {
 	       pane.setLayout(null); //Apply null layout
 	       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	      
-	       //create label for 'create an acount' and 'sign in'
+	       //create label for 'create an account' and 'sign in'
 	       JLabel ReserveRoomLabel = new JLabel("Reserve your room now");
 	       JLabel viewOrCancelReservation = new JLabel("View your current "
 	               + "reservation or Cancel a reservation");
@@ -65,7 +83,7 @@ public class BookingGUI {
 
 	       
 	   }
-	   public static void createMakeReservationGUI() {
+	   public static void createMakeReservationGUI(){
 
 	       pane.removeAll();
 	       
@@ -73,15 +91,16 @@ public class BookingGUI {
 	       confirmButt.setEnabled(false);
 	       JButton transactionDoneButt = new JButton("Transaction Done");
 	       JButton backButt = new JButton ("Home");
-	       final JButton luxButt = new JButton ("$200");
-	       final JButton econButt = new JButton ("$100");
+	       final JButton standardButt = new JButton ("Standard");
+	       final JButton suitButt = new JButton ("Suit");
+	       final JButton familyRButt = new JButton("Family Room");
 	       
 	       JLabel checkInLabel = new JLabel("Check-in:");
 	       JLabel checkOutLabel = new JLabel("Check-out:");
 	       JLabel roomType = new JLabel("Room type:");
 	       final JLabel errorMessage = new JLabel();
 	       
-	       textAreaGuest = new JTextArea();
+	      
 	       textAreaGuest.setEnabled(false);
 	       textAreaGuest.setText("Room information will be printed here as \n"
 	               + "you select the check-in and check-out \ndates and room type.");
@@ -105,7 +124,7 @@ public class BookingGUI {
 	     JDatePickerImpl datePickerO = new JDatePickerImpl(datePanelO, new DateComponentFormatter());
 	      
 	   //    Date selectedDate = (Date) datePicker.getModel().getValue();
-	       
+	 //      System.out.println("date panel.."+ datePicker.getModel().getValue());
 	       errorMessage.setBounds(25, 200, 200, 50);
 	      checkInLabel.setBounds(30, 40, 75, 25);
 	      datePicker.setBounds(100, 40, 140, 25);
@@ -116,9 +135,10 @@ public class BookingGUI {
 	       backButt.setBounds(10, 300, 75, 50);
 	       //checkInTextField.setBounds(50, 60, 80, 25);
 	     
-	       roomType.setBounds(30, 120, 80, 25);
-	       luxButt.setBounds(30, 140, 80, 50);
-	       econButt.setBounds(150, 140, 80, 50);
+	       roomType.setBounds(10, 120, 80, 25);
+	       standardButt.setBounds(10, 140, 70, 50);
+	      suitButt.setBounds(90, 140, 70, 50);
+	      familyRButt.setBounds(180, 140, 70, 50);
 	       textAreaGuest.setBounds(280, 40, 350, 250);
 	  
 	       
@@ -140,15 +160,77 @@ public class BookingGUI {
 	       };
 	      model.addChangeListener(listener);
 	      modelO.addChangeListener(listener);
-
+	      backButt.addActionListener( 
+	              new ActionListener() {
+	                  @Override
+	                  public void actionPerformed(ActionEvent event) {
+	                	  createReservationOrViewGUI(); //main menu
+	                
+	                  }});      
 	       //add listener to text field -- serves as Controller in MVC pattern
+	      //////////////////////factory////////////////////////////////////////////////////////
+	    
+	      familyRButt.addActionListener( 
+	              new ActionListener() {
+	                  @Override
+	                  public void actionPerformed(ActionEvent event) {
+	                	  String str= event.getActionCommand();
+	                	  try {
+							new HotelOperations().roomAvailable(str);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	                  }});    
+	      standardButt.addActionListener( 
+	              new ActionListener() {
+	                  @Override
+	                  public void actionPerformed(ActionEvent event) {
+	                	  System.out.println(event.getActionCommand()+" Click");
+	                	  String str= event.getActionCommand();
+	                	  try {
+							new HotelOperations().roomAvailable(str);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	                  }});    
+	       suitButt.addActionListener( 
+	              new ActionListener() {
+	                  @Override
+	                  public void actionPerformed(ActionEvent event) {
+	                	  String str= event.getActionCommand();
+	                	  try {
+							new HotelOperations().roomAvailable(str);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	                  }});    
 	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      
+	      ////////////////////////////////////////////////////////////////////////////////////////////
 	       frame.add(errorMessage);
 	       frame.add(confirmButt);
 	       frame.add(transactionDoneButt);
 	       frame.add(backButt);
-	       frame.add(luxButt);
-	       frame.add(econButt);
+	       frame.add(standardButt);
+	       frame.add(familyRButt);
+	       frame.add(suitButt);
 	       frame.add(checkInLabel);
 	       frame.add(checkOutLabel);
 	       frame.add(datePicker);
@@ -160,6 +242,6 @@ public class BookingGUI {
 	       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       frame.repaint();
 	      
-	   }          
-	}
-
+	   }
+  
+	 }

@@ -1,16 +1,16 @@
 package booking;
 
-import javax.swing.JTextArea;
+import java.sql.SQLException;
 
 public class RoomFactory {
 
-	public RoomVariety getRoom(String roomtype, JTextArea textAreaGuest){
+	public RoomVariety getRoom(String roomtype) throws SQLException{
 		if(roomtype.equalsIgnoreCase("standard"))
-			return new StandardRoom(textAreaGuest);
+			return new StandardRoom();
 		if(roomtype.equalsIgnoreCase("suit"))
-			return new Suit(textAreaGuest);
+			return new Suit();
 		if(roomtype.equalsIgnoreCase("family room"))
-			return new FamilyRoom(textAreaGuest);
+			return new FamilyRoom();
 		
 		return null;
 		

@@ -2,15 +2,16 @@ package booking;
 
 import java.sql.SQLException;
 
+
 public class RoomFactory {
 
-	public RoomVariety getRoom(String roomtype) throws SQLException{
+	public RoomVariety getRoom(String roomtype, String checkin, String checkout) throws SQLException{
 		if(roomtype.equalsIgnoreCase("standard"))
-			return new StandardRoom();
+			return new StandardRoom(checkin,checkout);
 		if(roomtype.equalsIgnoreCase("suit"))
-			return new Suit();
+			return new Suit(checkin,checkout);
 		if(roomtype.equalsIgnoreCase("family room"))
-			return new FamilyRoom();
+			return new FamilyRoom(checkin,checkout);
 		
 		return null;
 		

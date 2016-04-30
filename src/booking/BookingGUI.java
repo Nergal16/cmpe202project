@@ -1,5 +1,6 @@
 package booking;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -117,7 +118,7 @@ public class BookingGUI {
 	       JLabel checkOutLabel = new JLabel("Check-out:");
 	       JLabel roomType = new JLabel("Room type:");
 	       final JLabel errorMessage = new JLabel();
-	       for(int i=1;i<= 10;i++)
+	       for(int i=1;i<= 3;i++)
 	    	   num.add(new Integer(i));
 	      
 		 System.out.println("num is"+num);
@@ -156,7 +157,11 @@ System.out.println("You selected : " + selectedNum);
 	  //  datePicker.getJFormattedTextField().setT   .setText(dateAndTime);
 	   //    Date selectedDate = (Date) datePicker.getModel().getValue();
 	 //      System.out.println("date panel.."+ datePicker.getModel().getValue());
+	    
+	    JLabel calendarErrorMessage = new JLabel();
 	       errorMessage.setBounds(25, 200, 200, 50);
+	       calendarErrorMessage.setBounds(30, 260, 250, 50);
+	       calendarErrorMessage.setText("");
 	      checkInLabel.setBounds(30, 140, 75, 25);
 	      datePicker.setBounds(100, 150, 140, 25);
 	       checkOutLabel.setBounds(30, 170, 75, 25);
@@ -174,7 +179,7 @@ System.out.println("You selected : " + selectedNum);
 	       textAreaGuest.setBounds(480, 40, 150, 100);
 	       ticketsNumLabel.setBounds(30, 210, 75, 25);
 	          ticketsNum.setBounds(150, 210, 80, 25);
-	       
+	      
 	       System.out.println("came here..");   
 	       frame.repaint();      
 	       //ChangeListener
@@ -183,15 +188,25 @@ System.out.println("You selected : " + selectedNum);
 	               @Override
 	               public void stateChanged(ChangeEvent event) {
 	            	   System.err.println("yess");
-
+	            	   boolean out=false;boolean in= false;
+	            	   
+// || (datePicker.getModel().getMonth()==dateAndTime.getMonth() && datePicker.getModel().getDay() > dateAndTime.getDay()))
+         			  
 	            	   if((datePicker.getModel().getDay() > dateAndTime.getDate() &&datePicker.getModel().getMonth()==dateAndTime.getMonth()) || datePicker.getModel().getMonth()>dateAndTime.getMonth() && datePicker.getModel().getYear()>dateAndTime.getYear())
-	            	      System.out.println("goodjob"+datePicker.getModel().getDay()+""+dateAndTime.getDate()+""+datePicker.getModel().getMonth()+""+dateAndTime.getMonth()+""+ datePicker.getModel().getYear()+""+dateAndTime.getYear());
+	 	            	  in=true;
+	            	 
+	            	   if((datePickerO.getModel().getDay() > dateAndTime.getDate() &&datePickerO.getModel().getMonth()==dateAndTime.getMonth()) || datePickerO.getModel().getMonth()>dateAndTime.getMonth() && datePickerO.getModel().getYear()>dateAndTime.getYear())
+	            	   out=true;
+	            	  
 	            	
-	            	   else
-	            		   System.out.println("badjob"+datePicker.getModel().getDay()+""+dateAndTime.getDate()+""+datePicker.getModel().getMonth()+""+dateAndTime.getMonth()+""+ datePicker.getModel().getYear()+""+dateAndTime.getYear());
-		            		   
-	            	
-	           
+	           if(in && out){
+	        	   confirmButt.setEnabled(true);   
+	        	   calendarErrorMessage.setText("");   
+	           }
+	           else
+	           { calendarErrorMessage.setText("Please select valid date");
+	           confirmButt.setEnabled(false);
+	           }
 	       }
 	        
 	       };
@@ -217,7 +232,7 @@ System.out.println("You selected : " + selectedNum);
 	                		  System.out.println("date chaneg"+(Date) datePicker.getModel().getValue());
 	                		if(((Date) datePicker.getModel().getValue() != null) && ((Date) datePickerO.getModel().getValue() != null) )
 	                		{
-							    new HotelOperations().roomAvailable(str);
+							    new HotelOperations().roomAvailable(str,datePicker.getJFormattedTextField().getText(),datePickerO.getJFormattedTextField().getText());
 							     errorMessage.setText("");
 	                		}
 	                		else
@@ -235,9 +250,8 @@ System.out.println("You selected : " + selectedNum);
 	                	  String str= event.getActionCommand();
 	                	  try {
 	                		  lastState =str;
-							new HotelOperations().roomAvailable(str);
+							new HotelOperations().roomAvailable(str,datePicker.getJFormattedTextField().getText(),datePickerO.getJFormattedTextField().getText());
 						} catch (SQLException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 	                  }});    
@@ -247,7 +261,7 @@ System.out.println("You selected : " + selectedNum);
 	                  public void actionPerformed(ActionEvent event) {
 	                	  String str= event.getActionCommand();
 	                	  try {
-							new HotelOperations().roomAvailable(str);
+							new HotelOperations().roomAvailable(str,datePicker.getJFormattedTextField().getText(),datePickerO.getJFormattedTextField().getText());
 							 lastState =str;
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
@@ -273,6 +287,8 @@ System.out.println("You selected : " + selectedNum);
 	       frame.add(datePickerO);
 	       frame.add(roomType);
 	       frame.add(textAreaGuest);
+	     
+		frame.add(calendarErrorMessage);
 	      
 	       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       frame.repaint();

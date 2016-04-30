@@ -8,6 +8,8 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -65,6 +67,7 @@ public class HotelParis implements Serializable {
     static JComboBox<String> comboMonth;
     static JPanel cPanel; //panel for calendar
     static JButton[][] view; //for calendar
+    static String selectedDateOnManagerGUI = "";
     
 
     public static void main (String args[]) throws IOException, ClassNotFoundException {
@@ -533,7 +536,7 @@ public class HotelParis implements Serializable {
         pane.setLayout(null); //Apply null layout
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //create label for 'create an acount' and 'sign in'
+        //create label for 'create an account' and 'sign in'
         JLabel userIDLabel = new JLabel("Have an Account? Log in");
         JLabel createAccountTextArea = new JLabel("Not a user? Create your account");
 
@@ -1171,7 +1174,7 @@ public class HotelParis implements Serializable {
                 Integer currentValue = (Integer)spinner.getValue();
                 if (currentValue != null){
                     currentYear = currentValue;
-                   // refreshCalendar(currentMonth, currentYear);
+                   refreshCalendar(currentMonth, currentYear);
                 }//if
             }//stateChanged 
         });
@@ -1195,9 +1198,9 @@ public class HotelParis implements Serializable {
 
                     currentMonth = i;
                     //refresh calendar each time the month is changed
-                   // refreshCalendar(currentMonth, currentYear);
+                    refreshCalendar(currentMonth, currentYear);
                     //refresh the color for the selected date
-                   // refresh();
+                    refresh();
                 }//if
             }//actionPerformed
         });
@@ -1255,13 +1258,185 @@ public class HotelParis implements Serializable {
         }//for
         
         //refresh calendar and its color
-       // refresh();
-       // refreshCalendar (realMonth, realYear); //Refresh calendar
+        refresh();
+        refreshCalendar (realMonth, realYear); //Refresh calendar
         
         frame.repaint();
     
     }//createCalendarGUI
+    /**
+     * refreshes calendar when making any changes on calendar
+     * @param month the current month
+     * @param year the current year
+     */
+    public static void refreshCalendar(final int month, final int year){
+        refresh(); //refresh the date color
+                    
+        String[] months =  {"January", "February", "March", "April", "May", 
+            "June", "July", "August", "September", "October", "November", 
+            "December"};
+        int numberOfDays, startOfMonth; //number Of days, start Of month
+        
+        //refresh the month label (at the top)
+        comboMonth.setToolTipText(months[month]); 
+        comboMonth.setSelectedItem(months[month]); 
+        //select the correct year in the combo box
+        comboYear.setSelectedItem(String.valueOf(year)); 
 
+        //clear calendar
+        for (int i = 0; i < 6; i++){
+            for (int j = 0; j < 7; j++){
+                view[i+1][j].setText("");
+            }//for
+        }//for
+
+        //get first day of month and number of days
+        GregorianCalendar cal = new GregorianCalendar(year, month, 1);
+        numberOfDays = cal.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
+        startOfMonth = cal.get(GregorianCalendar.DAY_OF_WEEK);
+        
+        //draw JLabel
+        for (int i = 1; i <= numberOfDays; i++) {
+            final int row = (i + startOfMonth - 2) / 7;
+            final int column = (i + startOfMonth - 2) % 7;
+            view[row+1][column].setText(i + "");
+            view[row+1][column].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) { 
+                    refresh();
+                    if (!view[row+1][column].getText().isEmpty() ) {
+                        view[row+1][column].setBackground(new Color(0, 84, 227));
+                        view[row+1][column].setForeground(Color.red);
+                        selectedDateOnManagerGUI = (currentMonth + 1) + "/" + view[row+1][column].getText() + "/"+ currentYear;
+                        try {
+                            setTextAreaForManager();
+                        } catch (ParseException ex) {
+                            Logger.getLogger(HotelParis.class.getName()).log(Level.SEVERE, null, ex);
+                        }//try-catch
+                        frame.repaint();
+                    }//if
+                    view[row+1][column].setBorder(null);
+                }//mouseClicked
+            });   
+        }//for
+        
+        frame.repaint();
+        frame.revalidate();
+
+    }//refreshCalendar
+    public static void refresh () {
+        
+        for (int i = 1; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                view[i][j].setBackground(Color.white);
+                view[i][j].setForeground(Color.black);
+            }//for
+        }//for
+
+        for (int i = 1; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                //it's TODAY
+                if (!view[i][j].getText().isEmpty() && 
+                        view[i][j].getText().trim().length() > 0 && 
+                        Integer.parseInt(view[i][j].getText()) == realDay && 
+                        currentMonth == realMonth && currentYear == realYear) {
+                    //this is current day, make the background and text blue
+                    view[i][j].setBackground(new Color(0, 84, 227));
+                    view[i][j].setForeground(Color.blue);
+                }//if
+            }//for
+        }//for
+    
+    }//refresh
+    /**
+     * sets the text area field for the manager GUI
+     * @throws ParseException throws parse exception 
+     */
+    public static void setTextAreaForManager() throws ParseException {
+        String message = ""; //message to be printed 
+        DateFormat fromat = new SimpleDateFormat("MM/dd/yyyy"); //to be used for printing purposes
+        Date date = fromat.parse(selectedDateOnManagerGUI);  //to be used as key
+        int roomNumber = 0;
+        int price = 0;
+
+        if (!treeMapRoom.isEmpty()) {
+            //check the available rooms
+            int flag = 0;
+            for (int j = 0; treeMapRoom.get(date)!= null && j < treeMapRoom.get(date).roomArr.size(); j++)  { 
+                if (treeMapRoom.get(date).roomArr.get(j) == false) flag++;
+            }//for
+            
+            if (flag > 0) {
+                ArrayList<Boolean> room = treeMapRoom.get(date).getRoom();
+                message += "Reserved room information:\n";
+                message += "=============================\n";
+                for (int i = 0; i < 20; i++) {
+                    if(room.size() > i && room.get(i) == false) {
+                        if(i < 10) { roomNumber = (i + 100); price = 100; }
+                        else { roomNumber = (i + 190); price = 200; }
+                        message += "Room number: " + roomNumber + "\n";
+                        message += "Guest: " + treeMapRoom.get(date).getUser().get(i) + "\n";
+                        message += "Room Price: $" + price + "\n\t*****\n\n";
+                    }//if
+                }//for
+                
+                //list of available room for this day
+                message += "=============================\n";
+                message += "Available rooms for this day:\n";
+                message += "=============================\n";
+                for (int i = 0; i < 20; i++) {
+                    if(room.size() > i && room.get(i) == true) {
+                        if(i < 10) { roomNumber = (i + 100); price = 100; }
+                        else { roomNumber = (i + 190); price = 200; }
+                        message += "\t" + roomNumber + "\n";
+                    }//if
+                }//for
+            }//if
+            
+            //room is empty for this day
+            else {
+                message += "No reservation for this day!\n\n\n";
+                message += "=============================\n";
+                message += "Available rooms for this day:\n";
+                message += "=============================\n";
+                if (treeMapRoom.get(date) != null) {        
+                    ArrayList<Boolean> room = treeMapRoom.get(date).getRoom();        
+                    room = treeMapRoom.get(date).getRoom();
+                    for (int i = 0; i < 20; i++) {
+                        if(room.get(i) == true) {
+                            if(i < 10) { roomNumber = (i + 100); price = 100; }
+                            else { roomNumber = (i + 190); price = 200; }
+                            message += "\t" + roomNumber + "\n";
+                        }//if
+                    }//for     
+                }//if
+                //There is no Room associated with this dday
+                else {
+                    for (int i = 0; i < 20; i++) {
+                        if(i < 10) { roomNumber = (i + 100); price = 100; }
+                        else { roomNumber = (i + 190); price = 200; }
+                        message += "\t" + roomNumber + "\n";
+                    }//for
+                }//else
+            }//else
+        }//if
+        
+        //TreeMap is empty
+        else {
+            message += "No reservation for this day!\n\n\n";
+            message += "=============================\n";
+            message += "Available rooms for this day:\n";
+            message += "=============================\n";
+            for (int i = 0; i < 20; i++) {
+                if(i < 10) { roomNumber = (i + 100); price = 100; }
+                else { roomNumber = (i + 190); price = 200; }
+                message += "\t" + roomNumber + "\n";
+            }//for    
+        }//else
+
+        textArea.setText(message);
+        
+    }//setTextAreaForManager
     /**
      * GUI to show when guest successfully creates an account
      */

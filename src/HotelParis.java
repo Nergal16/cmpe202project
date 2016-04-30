@@ -192,7 +192,10 @@ public class HotelParis implements Serializable {
     }//createSignInGUI
     
     public static void createReservationOrViewGUI() {
-      
+        transactionID = (int) Math.floor(Math.random() * 900000000) + 100000000;
+        model.setTransactionID(transactionID);
+        pane.removeAll();
+
         frame.setTitle("Hotel Paris - Reservation");
         pane = frame.getContentPane(); //content pane
         pane.setLayout(null); //Apply null layout
@@ -218,15 +221,6 @@ public class HotelParis implements Serializable {
         viewOrCanceltButton.setBounds(175, 200, 310, 50);
         backButton.setBounds(10, 300, 75, 50);
 
-        viewOrCanceltButton.addActionListener(
-            new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    createMakeReservationGUI();
-                }//actionPerformed
-            }//ActionListener
-        );
-
         //set actionListener for button
         makeReservationButton.addActionListener(
                 new ActionListener() {
@@ -237,7 +231,7 @@ public class HotelParis implements Serializable {
                 }//ActionListener
         );
 
-        //associate view/cancel functionality with its button
+        //hook view/cancel button with its method
         viewOrCanceltButton.addActionListener(
                 new ActionListener() {
                     @Override

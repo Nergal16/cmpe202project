@@ -204,4 +204,12 @@ public class Model {
         }//while
 
     }//reserveRoom
+
+    /**
+     * sets the transaction ID
+     * @param theTransactionID the transaction ID
+     */
+    public void setTransactionID (int theTransactionID) {
+        transactionID = theTransactionID;
+    }//setTransactionID
 }

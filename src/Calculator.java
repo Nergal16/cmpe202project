@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class Calculator1 extends JFrame {
+public class Calculator extends JFrame {
     public static final int WIDTH = 500;
     public static final int HEIGHT = 400;
     private JTextField result;
@@ -22,7 +22,7 @@ public class Calculator1 extends JFrame {
     private JButton[] numB;
     private JButton[] operateB;
 
-    public Calculator1(String title) {
+    public Calculator(String title) {
         this.setTitle(title);
         this.result = new JTextField("0.0", 22);
         this.result.setEditable(false);
@@ -75,7 +75,7 @@ public class Calculator1 extends JFrame {
         this.setDefaultCloseOperation(3);
         this.setResizable(false);
         this.pack();
-        Calculator1.ButtonListener button = new Calculator1.ButtonListener();
+        Calculator.ButtonListener button = new Calculator.ButtonListener();
 
         int i;
         for(i = 0; i < this.numB.length; ++i) {
@@ -89,7 +89,7 @@ public class Calculator1 extends JFrame {
     }
 
     public static void main(String[] args) {
-        Calculator1 c = new Calculator1("Calculator");
+        Calculator c = new Calculator("Calculator");
         c.setVisible(true);
     }
 
@@ -140,14 +140,14 @@ public class Calculator1 extends JFrame {
         public void handleUnaryOp(String op) {
             if(op.equals("+/-")) {
                 this.number = this.negate(this.getNumberOnDisplay() + "");
-                Calculator1.this.result.setText("");
-                Calculator1.this.result.setText(this.number + "");
+                Calculator.this.result.setText("");
+                Calculator.this.result.setText(this.number + "");
             } else if(op.equals(".")) {
                 this.handleDecPoint();
             } else if(op.equals("sqrt")) {
                 this.number = Math.sqrt(this.getNumberOnDisplay());
-                Calculator1.this.result.setText("");
-                Calculator1.this.result.setText(this.number + "");
+                Calculator.this.result.setText("");
+                Calculator.this.result.setText(this.number + "");
             } else if(op.equals("=")) {
                 if(this.last != null && !this.isUnary(this.last)) {
                     this.handleBinaryOp(this.last);
@@ -179,7 +179,7 @@ public class Calculator1 extends JFrame {
 
             this.last = null;
             this.number = 0.0D;
-            Calculator1.this.result.setText(this.total + "");
+            Calculator.this.result.setText(this.total + "");
         }
 
         public void handleNumber(String s) {
@@ -191,8 +191,8 @@ public class Calculator1 extends JFrame {
             }
 
             this.number = (new Double(this.strVal)).doubleValue();
-            Calculator1.this.result.setText("");
-            Calculator1.this.result.setText(this.strVal);
+            Calculator.this.result.setText("");
+            Calculator.this.result.setText(this.strVal);
         }
 
         public void handleDecPoint() {
@@ -201,8 +201,8 @@ public class Calculator1 extends JFrame {
                 this.strVal = this.strVal + ".";
             }
 
-            Calculator1.this.result.setText("");
-            Calculator1.this.result.setText(this.strVal);
+            Calculator.this.result.setText("");
+            Calculator.this.result.setText(this.strVal);
         }
 
         public double negate(String s) {
@@ -221,7 +221,7 @@ public class Calculator1 extends JFrame {
         }
 
         public double getNumberOnDisplay() {
-            return (new Double(Calculator1.this.result.getText())).doubleValue();
+            return (new Double(Calculator.this.result.getText())).doubleValue();
         }
 
         public void clear() {
@@ -230,7 +230,7 @@ public class Calculator1 extends JFrame {
             this.strVal = "";
             this.total = 0.0D;
             this.number = 0.0D;
-            Calculator1.this.result.setText("0");
+            Calculator.this.result.setText("0");
         }
     }
 }

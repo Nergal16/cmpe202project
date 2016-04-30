@@ -4,11 +4,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class StandardRoom implements RoomVariety{
-
+ int len=0;
 	public StandardRoom() throws SQLException {
 		String list = available();
 		System.out.println("list is"+list);
-		new BookingGUI(list);
+		new BookingGUI(list,len);
 	}
 
 	@Override
@@ -18,8 +18,8 @@ public class StandardRoom implements RoomVariety{
 		ResultSet res= new DatabaseConnector().query(query);
 		while(res.next())
 			{
-			list.add(res.getInt("room_number"));
 		strlist += "\n"+res.getInt("room_number");
+		len++;
 		
 		}
 		System.out.println("strlist"+strlist);	

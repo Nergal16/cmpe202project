@@ -144,30 +144,35 @@ public class HotelParis implements Serializable {
         textField.setBounds(175, 100, 310, 25);
         backButton.setBounds(10, 300, 75, 50);
 
-        //added on 4/14/2016 by Mandeep Kaur
-        //add action listener 
-        
-        submitButton.addActionListener( 
-            new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    //signin
-                    createSignInGUI();
-                }//actionPerformed
-            }//ActionListener
+        //add action listener
+        submitButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        //sign-in
+                        if (treeMapGuest.containsKey(textField.getText())) {
+                            //user profile GUI
+                            createReservationOrViewGUI();
+                            userID = textField.getText(); //get user ID
+                        }//if
+                        //userID is incorrect
+                        else {
+                            signInTryAgainGUI(); //show error in sign in GUI
+                        }//else
+                    }//actionPerformed
+                }//ActionListener
         );
         
-        //added on 4/15/2016 by Mandeep Kaur
         //associate go back with its button
-        backButton.addActionListener( 
-            new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    createMainGUI();
-                }//actionPerformed
-            }//ActionListener
-        );        
-                
+        backButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createGuestMenu();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
         frame.add(submitButton);
         frame.add(backButton);
         frame.add(signInLabel);
@@ -547,7 +552,7 @@ public class HotelParis implements Serializable {
         final JTextField checkInTextField = new JTextField(10);
         final JTextField checkOutTextField = new JTextField(10);
 
-        frame.setTitle("ChampsElysees Hotel - Make Transaction");
+        frame.setTitle("Hotel Paris - Make Transaction");
         pane = frame.getContentPane(); //Get content pane
         pane.setLayout(null); //Apply null layout
 
@@ -908,8 +913,57 @@ public class HotelParis implements Serializable {
         frame.repaint();
     }
 
+    /**
+     * In case no rooms are available, the corresponding meesage is displayed
+     * @param text the text to be displayed on the GUI as a label
+     */
     public static void createNoRoomAvailableGUI(String text) {
-        //TODO implement this
+        pane.removeAll();
+
+        frame.setTitle("Hotel Paris - Error Message");
+        pane = frame.getContentPane(); //get content pane
+        pane.setLayout(null); //apply null layout
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //create label for 'create an acount' and 'sign in'
+        JLabel ReserveRoomLabel = new JLabel(text);
+        JLabel viewOrCancelReservation = new JLabel("Want to Go Back to Home?");
+
+        JButton makeReservationButt = new JButton("Try again");
+        JButton homeButt = new JButton("Home");
+
+        frame.add(ReserveRoomLabel);
+        frame.add(viewOrCancelReservation);
+        frame.add(makeReservationButt);
+        frame.add(homeButt);
+        ReserveRoomLabel.setBounds(155, 50, 500, 25);
+        viewOrCancelReservation.setBounds(175, 175, 310, 25);
+        makeReservationButt.setBounds(175, 100, 310, 50);
+        homeButt.setBounds(175, 200, 310, 50);
+
+        //set actionListener for button
+        makeReservationButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createMakeReservationGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //associate go home to its button
+        homeButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createMainGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        frame.repaint();
+        frame.setLocation(500, 100); //open in center of screen
+
     }
 
     /**
@@ -926,7 +980,7 @@ public class HotelParis implements Serializable {
         JButton submitButt = new JButton("Submit");
         JButton backButt = new JButton ("Back");
 
-        frame.setTitle("ChampsElysees Hotel - Create an Account");
+        frame.setTitle("Hotel Paris - Create an Account");
         pane = frame.getContentPane(); //Get content pane
         pane.setLayout(null); //Apply null layout
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -974,7 +1028,7 @@ public class HotelParis implements Serializable {
         JLabel signInLabel = new JLabel("Congratulations! Your account has "
                 + "been created successfully. \nPlease sign In");
 
-        frame.setTitle("ChampsElysees Hotel - Account Created!");
+        frame.setTitle("Hotel Paris - Account Created!");
         pane = frame.getContentPane(); //Get content pane
         pane.setLayout(null); //Apply null layout
 
@@ -1196,5 +1250,50 @@ public class HotelParis implements Serializable {
         frame.setLocation(500, 100); //open in center of screen
 
     }//simpleFormatGUI
-    
+
+    /**
+     * GUI to shows error message in sign in
+     */
+    public static void signInTryAgainGUI() {
+        pane.removeAll();
+
+        JButton submitButt = new JButton("Try again");
+        JButton backButt = new JButton ("Back");
+        JLabel signInLabel = new JLabel("Sorry! Wrong UserID. \nPlease try again");
+
+        frame.setTitle("Hotel Paris - Account not accessed!");
+        pane = frame.getContentPane(); //get content pane
+        pane.setLayout(null); //apply null layout
+
+        signInLabel.setBounds(220, 75, 500, 25);
+        submitButt.setBounds(175, 200, 310, 50);
+        backButt.setBounds(10, 300, 75, 50);
+
+        //add action listener
+        submitButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createSignInGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //associate go back with its button
+        backButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createGuestMenu(); //go to guest menu
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        frame.add(submitButt);
+        frame.add(backButt);
+        frame.add(signInLabel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.repaint();
+
+    }//signInTryAgainGUI
 }

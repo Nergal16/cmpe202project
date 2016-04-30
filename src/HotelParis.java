@@ -506,23 +506,23 @@ public class HotelParis implements Serializable {
         JLabel userIDLabel = new JLabel("Have an Account? Log in");
         JLabel createAccountTextArea = new JLabel("Not a user? Create your account");
 
-        JButton signInButt = new JButton("Sign In");
-        JButton createAccountButt = new JButton("Create Account");
-        JButton backButt = new JButton ("Back");
+        JButton signInButton = new JButton("Sign In");
+        JButton createAccountButton = new JButton("Create Account");
+        JButton backButton = new JButton ("Back");
 
         frame.add(userIDLabel);
         frame.add(createAccountTextArea);
-        frame.add(signInButt);
-        frame.add(createAccountButt);
-        frame.add(backButt);
+        frame.add(signInButton);
+        frame.add(createAccountButton);
+        frame.add(backButton);
         userIDLabel.setBounds(175, 75, 310, 25);
         createAccountTextArea.setBounds(175, 175, 310, 25);
-        signInButt.setBounds(175, 100, 310, 50);
-        createAccountButt.setBounds(175, 200, 310, 50);
-        backButt.setBounds(10, 300, 75, 50);
+        signInButton.setBounds(175, 100, 310, 50);
+        createAccountButton.setBounds(175, 200, 310, 50);
+        backButton.setBounds(10, 300, 75, 50);
 
         //set actionListener for button
-        signInButt.addActionListener(
+        signInButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent event) {
@@ -530,6 +530,29 @@ public class HotelParis implements Serializable {
                     }//actionPerformed
                 }//ActionListener
         );
+
+        //associate create account function with its button
+        createAccountButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createAccountGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //associate go back function with its button
+        backButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createMainGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        frame.repaint();
+
     }
 
     /**

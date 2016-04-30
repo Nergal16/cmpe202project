@@ -18,7 +18,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by Nergal Issaie on 4/11/16.
+ * Created by cmpe 202 on 4/11/16.
+ * CMPE 202
+ * Hotel Paris Swing Application April ~ May 2016
+ * Team members:
+ * Haroldo Filho,
+ * Mandeep Kaur,
+ * Mukul Bajpai,
+ * Ruiqi Cheng ,
+ * George Tulakyan,
+ * Nergal Issaie
  */
 public class HotelParis implements Serializable {
     static Container pane;
@@ -80,6 +89,7 @@ public class HotelParis implements Serializable {
         frame.setSize(680, 400);
         frame.setResizable(false);
         frame.getContentPane().add(new BackgroundImage("Paris.jpg"));
+        frame.repaint();
         frame.setVisible(true);
 
         // set frame for RoomServiceController
@@ -88,6 +98,7 @@ public class HotelParis implements Serializable {
         createMainGUI();
 
     }//main
+
     public static void createMainGUI() {
         //clear pane if not null
         if (pane != null) {
@@ -133,9 +144,10 @@ public class HotelParis implements Serializable {
         frame.repaint();
 
     }//createMainGUI
-/**
- * Created by Mandeep Kaur on 4/12/16.
- */
+
+    /**
+     *  create Sign In GUI
+     */
     public static void createSignInGUI() {
         pane.removeAll();
         

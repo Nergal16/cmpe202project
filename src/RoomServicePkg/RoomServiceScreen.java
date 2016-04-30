@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by home on 4/20/2016.
+ * Created by cmpe 202 on 4/20/2016.
  */
 public class RoomServiceScreen {
     static Container pane;
@@ -13,6 +13,11 @@ public class RoomServiceScreen {
     static JTextArea textArea;
     static JButton fishButton;
     static JButton burgerButton;
+    static JButton addBaconButton;
+    static JButton addEggButton;
+    static JButton billButton;
+    static JButton clearBillButton;
+
     static JTextField textField;
     private RoomServiceController controller;
     public RoomServiceScreen( RoomServiceController controller){
@@ -40,6 +45,7 @@ public class RoomServiceScreen {
         if (pane != null) {
             pane.removeAll();
         }//if
+        frame.setSize(780, 500);
         frame.setTitle("Room Service Menu");
         pane = frame.getContentPane(); //get content pane
         pane.setLayout(null); //apply null layout
@@ -52,13 +58,33 @@ public class RoomServiceScreen {
         frame.add(textLabel);
         textLabel.setBounds(275, 50, 310, 25);
 
-        //create two radio buttons and associate action listeners
+        //create food buttons and associate action listeners
         fishButton = new JButton("Wild Market Fish");
-        fishButton.setBounds(175, 100, 310, 50);
-        burgerButton.setBounds(175, 200, 310, 50);
-
+        fishButton.setBounds(50, 100, 200, 50);
         frame.add(fishButton);
+
+        billButton = new JButton("Total Bill");
+        billButton.setBounds(100, 180, 100, 50);
+        frame.add(billButton);
+
+        clearBillButton = new JButton("Clear Bill");
+        clearBillButton.setBounds(100, 260, 100, 50);
+        frame.add(clearBillButton);
+
+        burgerButton = new JButton("Mominette Burger");
+        burgerButton.setBounds(420, 100, 200, 50);
         frame.add(burgerButton);
+
+        addBaconButton = new JButton("Add Bacon");
+        addBaconButton.setBounds(470, 180, 100, 50);
+        frame.add(addBaconButton);
+
+        addEggButton = new JButton("Add Egg");
+        addEggButton.setBounds(470, 260, 100, 50);
+        frame.add(addEggButton);
+
+
+
 
         //add button
         JButton contButton = new JButton("Finish Order");

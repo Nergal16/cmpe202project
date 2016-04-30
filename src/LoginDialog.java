@@ -50,7 +50,7 @@ public class LoginDialog extends JDialog {
         btnLogin.addActionListener(new ActionListener() {
  
             public void actionPerformed(ActionEvent e) {
-            	User user=new User(getUsername(),getPassword());
+            	UserFacade user=new UserFacade(getUsername(),getPassword());
             	Login login=new Login(user);            	
                 if (login.authenticate()) {               	
                 	ManagerProxy managerProxy=new ManagerProxy(user);

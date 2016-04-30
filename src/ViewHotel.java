@@ -43,14 +43,14 @@ public class ViewHotel extends JFrame implements ActionListener {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                Test1 inst = new Test1();
+                ViewHotel inst = new ViewHotel();
                 inst.setLocationRelativeTo(null);
                 inst.setVisible(true);
             }
         });
     }
 
-    public Test1() {
+    public ViewHotel() {
         super();
         initGUI();
     }

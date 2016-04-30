@@ -58,6 +58,14 @@ public class HotelParis implements Serializable {
     static boolean dateCheckIn = false;
     static boolean dateCheckOut = false;
     static String label = "";
+    static int realYear, realMonth, realDay, currentYear, currentMonth;
+    static JSpinner spinner;
+    static SpinnerModel sm;
+    static JComboBox<String> comboYear;
+    static JComboBox<String> comboMonth;
+    static JPanel cPanel; //panel for calendar
+    static JButton[][] view; //for calendar
+    
 
     public static void main (String args[]) throws IOException, ClassNotFoundException {
         textAreaFormat = new JTextArea(20, 40);
@@ -88,7 +96,7 @@ public class HotelParis implements Serializable {
         frame.setLocation(500, 100); //open in center of screen
         frame.setSize(680, 400);
         frame.setResizable(false);
-        frame.getContentPane().add(new BackgroundImage("Paris.jpg"));
+        //frame.getContentPane().add(new BackgroundImage("Paris.jpg"));
         frame.repaint();
         frame.setVisible(true);
 
@@ -137,6 +145,23 @@ public class HotelParis implements Serializable {
                         createGuestMenu();
                     }//actionPerformed
                 }//ActionListener
+        );
+        
+        //set actionListener for manager button
+        managerButton.addActionListener( 
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event) {
+                	LoginDialog loginDlg = new LoginDialog(frame);
+                    loginDlg.setVisible(true);
+                   // createCalendarGUI();
+                	//User user=new User("manager","password");
+                	//ManagerProxy managerProxy=new ManagerProxy(user);
+                	//managerProxy.managerOperations();
+                	//IManager manager = new Manager();
+                	//manager.managerOperations();
+                }//actionPerformed
+            }//ActionListener
         );
 
         pane.add(panel);
@@ -1069,6 +1094,173 @@ public class HotelParis implements Serializable {
         frame.repaint();
 
     }//createAccountGUI
+    
+    /**
+     * GUI for creating calendar on the Manager's GUI
+     */
+    public static void createCalendarGUI() {
+        String[] months =  {"January", "February", "March", "April", "May", 
+            "June", "July", "August", "September", "October", "November", 
+            "December"};
+        
+        //Prepare frame
+        pane.removeAll();
+        frame.setTitle("ChampsElysees Hotel - Manager App");
+        panel = new JPanel(null);
+        pane = frame.getContentPane(); //Get content pane
+        pane.setLayout(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //save both TreeMaps onto Disk upon manager pressing the button
+        JButton saveAndQuitBut = new JButton("Save and Quit");
+        saveAndQuitBut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    //save both treeMapRoom and treeMapGuest to Disk
+                    saveToDisk();
+                    //exit the program
+                    System.exit(0);
+                } catch (IOException ex) {
+                    System.out.println("Error occured when saving files onto disk");
+                }//try-catch
+
+            }//actionPerformed 
+        });
+        
+        textArea = new JTextArea();
+        textArea.setEnabled(false);
+        textField = new JTextField();
+        textField.setEnabled(true);
+
+        //spinner for year menu
+        //default value,lower bound,upper bound,increment by
+        sm = new SpinnerNumberModel(2014, 1914, 2114, 1); 
+        spinner = new JSpinner(sm);
+        //disable comma from the number
+        spinner.setEditor(new JSpinner.NumberEditor(spinner,"#")); 
+        spinner.setEnabled(true);
+
+        //create combo year and combo month
+        comboYear = new JComboBox<String>();
+        comboMonth = new JComboBox<String>();           
+        
+        //create calendar
+        view = new JButton[7][7];
+        cPanel = new JPanel();
+        
+        cPanel.setLayout(new GridLayout(7, 7));
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                final JButton button = new JButton("");
+                button.setEnabled(false);
+                button.setFont(new Font("Serif", 1, 10));
+                view[i][j] = button;
+                cPanel.add(view[i][j]);
+                cPanel.setBackground(Color.white);
+                cPanel.setForeground(Color.white);
+            }//for
+        }//for
+        
+        panel.setBorder(BorderFactory.createTitledBorder(""));
+
+        //register action listeners
+        spinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent ce) {
+                Integer currentValue = (Integer)spinner.getValue();
+                if (currentValue != null){
+                    currentYear = currentValue;
+                   // refreshCalendar(currentMonth, currentYear);
+                }//if
+            }//stateChanged 
+        });
+        
+        //fill-in Jcombobox for months
+        comboMonth.addActionListener(new ActionListener() {
+            String[] months =  {"January", "February", "March", "April", "May", 
+            "June", "July", "August", "September", "October", "November", 
+            "December"};
+            String theMonth = "";
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                int i;
+                if (comboMonth.getSelectedItem() != null) {
+                    theMonth = comboMonth.getSelectedItem().toString();
+                    for (i = 0; i < 12; i++) {
+                        if (months[i].equals(theMonth)) {
+                            break;
+                        }//if
+                    }//for
+
+                    currentMonth = i;
+                    //refresh calendar each time the month is changed
+                   // refreshCalendar(currentMonth, currentYear);
+                    //refresh the color for the selected date
+                   // refresh();
+                }//if
+            }//actionPerformed
+        });
+        
+        //create Scrollbar for textArea that is used on the manager GUI
+        scrollBar = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        
+        scrollBar.setEnabled(true);
+        scrollBar.setVisible(true);
+        frame.add(scrollBar);
+        scrollBar.setBounds(50, 500, 500, 50);
+        frame.add(saveAndQuitBut);
+        
+        //Add controls to pane
+        pane.add(panel);
+        panel.add(spinner);
+        panel.add(comboMonth);        
+        
+        //panel.add(stableCalendar);
+        panel.add(cPanel);
+        
+        //Set bounds
+        panel.setBounds(0, 0, 320, 335);
+        comboYear.setBounds(230, 305, 80, 20);
+        comboMonth.setBounds(10, 25, 150, 25);
+        spinner.setBounds(170, 25, 140, 25);
+        textField.setBounds(350, 50, 300, 250);
+        textArea.setBounds(350, 25, 300, 283);
+        scrollBar.setBounds(350, 25, 300, 283);
+        cPanel.setBounds(10, 50, 300, 258);
+        saveAndQuitBut.setBounds(390, 320, 220, 30);
+
+        frame.setVisible(true);          
+        frame.repaint();
+        
+        //ddd week's headers to the calendar
+        String[] headers = {"S", "M", "T", "W", "T", "F", "S"};
+        
+        //header for JLabel
+        for (int i = 0; i < 7; i++) {
+            view[0][i].setText(headers[i]);
+            view[0][i].setForeground(Color.black);
+        }//for
+        frame.repaint();
+
+        //populate combo year
+        for (int i = realYear - 100; i <= realYear + 100; i++){
+            comboYear.addItem(String.valueOf(i));
+        }//for
+
+        //add items to comboMonth
+        for (int i = 0; i < 12; i++){
+            comboMonth.addItem(months[i]);
+        }//for
+        
+        //refresh calendar and its color
+       // refresh();
+       // refreshCalendar (realMonth, realYear); //Refresh calendar
+        
+        frame.repaint();
+    
+    }//createCalendarGUI
 
     /**
      * GUI to show when guest successfully creates an account

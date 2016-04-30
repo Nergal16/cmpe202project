@@ -233,7 +233,6 @@ public class HotelParis implements Serializable {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent event) {
-                        ;
                         frame.repaint();
                         createViewOrCancelGUI();
                         frame.repaint();
@@ -978,7 +977,7 @@ public class HotelParis implements Serializable {
         final JTextField userIDtextField = new JTextField();
         final JTextField userNametextField = new JTextField();
         JButton submitButt = new JButton("Submit");
-        JButton backButt = new JButton ("Back");
+        JButton backButton = new JButton ("Back");
 
         frame.setTitle("Hotel Paris - Create an Account");
         pane = frame.getContentPane(); //Get content pane
@@ -991,13 +990,29 @@ public class HotelParis implements Serializable {
         idLabel.setBounds(175, 75, 310, 25);
         useNameLabel.setBounds(175, 125, 310, 25);
         submitButt.setBounds(175, 200, 310, 50);
-        backButt.setBounds(10, 300, 75, 50);
+        backButton.setBounds(10, 300, 75, 50);
 
-        //TODO add action listener
-
+        //add action listener
+        submitButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        //store user account info
+                        boolean existed = userAccount.createGuestAccount(userIDtextField.getText(),
+                                userNametextField.getText(), treeMapGuest);
+                        if (existed == true) {
+                            createCongratsGUI();
+                            userID = userIDtextField.getText();
+                            model.setUserID(userID);
+                        }//if
+                        else
+                            createAccountTryAgainGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
 
         //associate go back with its button
-        backButt.addActionListener(
+        backButton.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent event) {
@@ -1012,7 +1027,7 @@ public class HotelParis implements Serializable {
         frame.add(idLabel);
         frame.add(useNameLabel);
         frame.add(submitButt);
-        frame.add(backButt);
+        frame.add(backButton);
         frame.repaint();
 
     }//createAccountGUI
@@ -1081,6 +1096,24 @@ public class HotelParis implements Serializable {
         catch (IOException | ClassNotFoundException e) {}
 
     }//readFromDisk
+
+    /**
+     * used file database to store the treeMapGuest and treeMapRoom data
+     * @throws FileNotFoundException file not found exception
+     * @throws IOException IO exception
+     */
+    public static void saveToDisk() throws FileNotFoundException, IOException {
+        //STORE treeMapGuest into disk
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("treeMapRoom.data"));
+        out.writeObject(treeMapRoom);
+        out.close();
+
+        //STORE treeMapRoom into disk
+        ObjectOutputStream out2 = new ObjectOutputStream(new FileOutputStream("treeMapGuest.data"));
+        out2.writeObject(treeMapGuest);
+        out2.close();
+
+    }//saveToDisk
 
     /**
      * creates a GUI to ask user to select a receipt format
@@ -1172,7 +1205,7 @@ public class HotelParis implements Serializable {
 
         invoice = new InvoicePreparer(new StrategyComprehensiveReceipt(), treeMapGuest, userID);
         String resultA = invoice.executeStrategy(transactionID, nowTransactionID);
-        JButton backBut = new JButton("Back");
+        JButton backButton = new JButton("Back");
         textAreaFormat.setText(resultA);
         textAreaFormat.setEditable(false);
 
@@ -1185,10 +1218,10 @@ public class HotelParis implements Serializable {
         scrollBar.setBounds(5,5,665, 695);
         frame.setBounds(5, 5, 680, 800);
         textAreaFormat.setBounds(10,10,660,700);
-        backBut.setBounds(285,708,100,50);
+        backButton.setBounds(285,708,100,50);
         frame.add(scrollBar);
 
-        backBut.addActionListener(new ActionListener()
+        backButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent event){
@@ -1196,7 +1229,7 @@ public class HotelParis implements Serializable {
             }
         });
 
-        frame.add(backBut);
+        frame.add(backButton);
         frame.add(scrollBar);
         frame.setVisible(true);
         frame.repaint();
@@ -1220,7 +1253,7 @@ public class HotelParis implements Serializable {
 
         invoice = new InvoicePreparer(new StrategySimpleReceipt(), treeMapGuest, userID);
         String resultA = invoice.executeStrategy(transactionID, nowTransactionID);
-        JButton backBut = new JButton("Back");
+        JButton backButton = new JButton("Back");
         textAreaFormat.setText(resultA);
         textAreaFormat.setEditable(false);
 
@@ -1232,10 +1265,10 @@ public class HotelParis implements Serializable {
         scrollBar.setBounds(5,5,665, 695);
         frame.setBounds(5, 5, 680, 800);
         textAreaFormat.setBounds(10,10,660,700);
-        backBut.setBounds(285,708,100,50);
+        backButton.setBounds(285,708,100,50);
         frame.add(scrollBar);
 
-        backBut.addActionListener(new ActionListener()
+        backButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent event){
@@ -1243,7 +1276,7 @@ public class HotelParis implements Serializable {
             }
         });
 
-        frame.add(backBut);
+        frame.add(backButton);
         frame.add(scrollBar);
         frame.setVisible(true);
         frame.repaint();
@@ -1296,4 +1329,51 @@ public class HotelParis implements Serializable {
         frame.repaint();
 
     }//signInTryAgainGUI
+
+    /**
+     * This GUI throws an error when account was not successfully created
+     */
+    public static void createAccountTryAgainGUI() {
+        pane.removeAll();
+
+        JButton submitButt = new JButton("Try again");
+        JButton backButt = new JButton ("Home");
+        JLabel createAccountErrorLabel = new JLabel("Sorry! The userID is not "
+                + "valid. \nPlease try again!");
+
+        frame.setTitle("Hotel Paris - Account not created!");
+        pane = frame.getContentPane(); //Get content pane
+        pane.setLayout(null); //Apply null layout
+
+        createAccountErrorLabel.setBounds(200, 75, 500, 25);
+        submitButt.setBounds(175, 200, 310, 50);
+        backButt.setBounds(10, 300, 75, 50);
+
+        //add action listener
+        submitButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createAccountGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //associate go back with its button
+        backButt.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createMainGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        frame.add(submitButt);
+        frame.add(backButt);
+        frame.add(createAccountErrorLabel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.repaint();
+
+    }//createAccountTryAgainGUI
 }

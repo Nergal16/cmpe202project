@@ -3,9 +3,8 @@ package RoomServicePkg;
 import java.util.ArrayList;
 
 /**
- * Created by Haroldo Filho on 4/14/2016.
+ * Created by cmpe 202 - group 4 on 4/12/16.
  */
-
 // This class is the composite in the Composite Pattern for RoomServicePkg
 public class RoomServiceOrder implements RoomService {
 

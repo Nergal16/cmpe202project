@@ -1,7 +1,7 @@
 package RoomServicePkg;
 
 /**
- * Created by Haroldo Filho on 4/14/2016.
+ * Created by cmpe 202 - group 4 on 4/12/16.
  */
 public class LongIslandDuckBreast extends RoomServiceOrder {
     public LongIslandDuckBreast(String item, Double price) {

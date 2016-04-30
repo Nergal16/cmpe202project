@@ -118,6 +118,15 @@ public class HotelParis implements Serializable {
         JButton contButton = new JButton("Continue");
         contButton.setEnabled(true);
 
+        //set actionListener for guest button
+        guestButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createGuestMenu();
+                    }//actionPerformed
+                }//ActionListener
+        );
 
         pane.add(panel);
         frame.setVisible(true);

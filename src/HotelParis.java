@@ -59,6 +59,7 @@ public class HotelParis implements Serializable {
     static boolean dateCheckIn = false;
     static boolean dateCheckOut = false;
     static String label = "";
+    static int realYear, realMonth, realDay, currentYear, currentMonth;
 
     public static void main (String args[]) throws IOException, ClassNotFoundException {
         textAreaFormat = new JTextArea(20, 40);
@@ -89,9 +90,17 @@ public class HotelParis implements Serializable {
         frame.setLocation(500, 100); //open in center of screen
         frame.setSize(680, 400);
         frame.setResizable(false);
-        frame.getContentPane().add(new BackgroundImage("Paris.jpg"));
+
         frame.repaint();
         frame.setVisible(true);
+
+        //Get real month/year
+        GregorianCalendar cal = new GregorianCalendar(); //Create calendar
+        realDay = cal.get(GregorianCalendar.DAY_OF_MONTH); //Get day
+        realMonth = cal.get(GregorianCalendar.MONTH); //Get month
+        realYear = cal.get(GregorianCalendar.YEAR); //Get year
+        currentMonth = realMonth; //Match month and year
+        currentYear = realYear;
 
         // set frame for RoomServiceController
         RoomServiceController.getInstance().setMenuScreenFrame(frame);

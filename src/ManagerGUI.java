@@ -28,7 +28,6 @@ public class ManagerGUI extends HotelParis {
     private static JComboBox<String> comboYear, comboMonth;
     private static JButton[][] view;
     private static JPanel cPanel;
-    static int realYear, realMonth, realDay, currentYear, currentMonth;
     static String selectedDateOnManagerGUI = "";
     static JScrollPane scrollBar;
 
@@ -177,7 +176,6 @@ public class ManagerGUI extends HotelParis {
         textArea.setBounds(350, 25, 300, 283);
         scrollBar.setBounds(350, 25, 300, 283);
         cPanel.setBounds(10, 50, 300, 258);
-        ///saveAndQuitBut.setBounds(390, 320, 220, 30);
         saveAndQuitButton.setBounds(390, 320, 120, 30);
         backButton.setBounds(520, 320, 120, 30);
 

@@ -36,6 +36,7 @@ public class HotelParis implements Serializable {
     static JTextArea textArea;
     static JButton guestButton;
     static JButton managerButton;
+    static JButton viewButton;
     static JTextField textField;
     static JTextArea textAreaFormat;
     static TreeMap<String, UserAccount> treeMapGuest; //user account
@@ -119,11 +120,14 @@ public class HotelParis implements Serializable {
         //create two radio buttons and associate action listeners
         guestButton = new JButton("Guest");
         managerButton = new JButton("Manager");
+        viewButton = new JButton("View Hotel");
         guestButton.setBounds(175, 100, 310, 50);
-        managerButton.setBounds(175, 200, 310, 50);
+        managerButton.setBounds(175, 180, 310, 50);
+        viewButton.setBounds(175, 260, 310, 50);
 
         frame.add(guestButton);
         frame.add(managerButton);
+        frame.add(viewButton);
 
         //add button
         JButton contButton = new JButton("Continue");
@@ -148,6 +152,18 @@ public class HotelParis implements Serializable {
                     }//actionPerformed
                 }//ActionListener
         );
+
+        //set actionListener for view button
+        viewButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        //TODO hook this to ViewHotel class
+
+                    }//actionPerformed
+                }//ActionListener
+        );
+
         pane.add(panel);
         frame.setVisible(true);
         frame.repaint();

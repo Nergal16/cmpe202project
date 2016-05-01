@@ -97,7 +97,15 @@ public class BookingGUI {
 	               }//actionPerformed
 	           }//ActionListener
 	       );
-
+	       viewOrCanceltButton.addActionListener( 
+		           new ActionListener() {
+		               @Override
+		               public void actionPerformed(ActionEvent event) {
+		                 // HAVE TO CHANGE AS PER THE OBSERVER PATTERN
+		            	   new CancellationGUI().createViewOrCancelGUI();
+		               }//actionPerformed
+		           }//ActionListener
+		       );
 	       
 	   }
 	   public static void createMakeReservationGUI(){

@@ -30,7 +30,7 @@ public class ManagerGUI extends HotelParis {
     private static JPanel cPanel;
     static int realYear, realMonth, realDay, currentYear, currentMonth;
     static String selectedDateOnManagerGUI = "";
-
+    static JScrollPane scrollBar;
 
     /**
      * GUI for creating calendar on the Manager's GUI

@@ -242,26 +242,21 @@ public class HotelParis implements Serializable {
         pane = frame.getContentPane(); //content pane
         pane.setLayout(null); //Apply null layout
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        //create label for 'create an acount' and 'sign in'
-        JLabel ReserveRoomLabel = new JLabel("Reserve your room now");
-        JLabel viewOrCancelReservation = new JLabel("View your current "
-                + "reservation or Cancel a reservation");
 
         JButton makeReservationButton = new JButton("Make a Reservation");
         JButton viewOrCanceltButton = new JButton("View/Cancel a Reservation");
+        JButton orderRoomServiceButton = new JButton("Order Room Service");
         JButton backButton = new JButton ("Back");
 
-        frame.add(ReserveRoomLabel);
-        frame.add(viewOrCancelReservation);
         frame.add(makeReservationButton);
         frame.add(viewOrCanceltButton);
         frame.add(backButton);
-        ReserveRoomLabel.setBounds(175, 75, 310, 25);
-        viewOrCancelReservation.setBounds(175, 175, 310, 25);
-        makeReservationButton.setBounds(175, 100, 310, 50);
-        viewOrCanceltButton.setBounds(175, 200, 310, 50);
+        frame.add(orderRoomServiceButton);
+        makeReservationButton.setBounds(175, 50, 310, 50);
+        viewOrCanceltButton.setBounds(175, 130, 310, 50);
+        orderRoomServiceButton.setBounds(175, 210, 310, 50);
         backButton.setBounds(10, 300, 75, 50);
+
 
         //set actionListener for button
         makeReservationButton.addActionListener(
@@ -280,6 +275,18 @@ public class HotelParis implements Serializable {
                     public void actionPerformed(ActionEvent event) {
                         frame.repaint();
                         createViewOrCancelGUI();
+                        frame.repaint();
+                    }//actionPerformed
+                }//ActionListener
+        );
+
+        //hook order room service button with its method
+        orderRoomServiceButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        frame.repaint();
+                        //TODO hook this to orderRoomService
                         frame.repaint();
                     }//actionPerformed
                 }//ActionListener
@@ -1164,24 +1171,6 @@ public class HotelParis implements Serializable {
         catch (IOException | ClassNotFoundException e) {}
 
     }//readFromDisk
-
-    /**
-     * used file database to store the treeMapGuest and treeMapRoom data
-     * @throws FileNotFoundException file not found exception
-     * @throws IOException IO exception
-     */
-    public static void saveToDisk() throws FileNotFoundException, IOException {
-        //STORE treeMapGuest into disk
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("treeMapRoom.data"));
-        out.writeObject(treeMapRoom);
-        out.close();
-
-        //STORE treeMapRoom into disk
-        ObjectOutputStream out2 = new ObjectOutputStream(new FileOutputStream("treeMapGuest.data"));
-        out2.writeObject(treeMapGuest);
-        out2.close();
-
-    }//saveToDisk
 
     /**
      * creates a GUI to ask user to select a receipt format

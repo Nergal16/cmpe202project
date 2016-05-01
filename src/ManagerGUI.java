@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by nissaie on 4/30/16.
+ * Created by cmpe 202 - group 4 on 4/30/16.
  */
 public class ManagerGUI extends HotelParis {
     static SpinnerModel sm;
@@ -153,14 +153,10 @@ public class ManagerGUI extends HotelParis {
             }//actionPerformed
         });
 
-        //create Scrollbar for textArea that is used on the manager GUI
-        scrollBar = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        //Decorator Pattern to create Scrollbar for textArea that is used on the manager GUI to show available rooms
+        IComponent obj = new ConcreteDecorator(new ConcreteComponent()) ;
+        obj.operation() ;
 
-        scrollBar.setEnabled(true);
-        scrollBar.setVisible(true);
-        frame.add(scrollBar);
-        scrollBar.setBounds(50, 500, 500, 50);
         frame.add(saveAndQuitButton);
         frame.add(backButton);
 

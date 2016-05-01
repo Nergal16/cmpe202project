@@ -139,11 +139,25 @@ public class HotelParis implements Serializable {
                 }//ActionListener
         );
 
+        //set actionListener for manager button
+        managerButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        createCalendarGUI();
+                    }//actionPerformed
+                }//ActionListener
+        );
         pane.add(panel);
         frame.setVisible(true);
         frame.repaint();
 
     }//createMainGUI
+
+    ///
+    public static void createCalendarGUI() {
+        ManagerGUI.createCalendarGUI();
+    }
 
     /**
      *  create Sign In GUI

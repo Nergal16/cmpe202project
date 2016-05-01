@@ -23,7 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 
 
-public class FoodReviews extends MainReviews {
+public class FoodReviews implements Review{
 	JLabel name,ageLabel,ratingLabel,describe;
 	JPanel panel;
 	int y =0;

@@ -8,7 +8,7 @@
 
 public interface Review {
 	    public void printItems();
-	    public void addChild(MainReviews item);
-	    public void removeChild(MainReviews item);
-	    public void getChild(int childIndex);
+	    public void displayData();
+	   
+	    
 }

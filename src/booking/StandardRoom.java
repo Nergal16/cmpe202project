@@ -6,12 +6,14 @@ import java.util.Date;
 
 public class StandardRoom implements RoomVariety{
  int len=0;
+ String facilities = "mnmnnmn";
 	public StandardRoom(String checkin, String checkout) throws SQLException {
 		String query= "SELECT room_number FROM availableroom WHERE availablefrom < '"+checkin+"' AND availabletill > '"+checkout+"' AND room_type='StandardRoom'";
 System.out.println("dd"+checkin+"  "+checkout);
 		String list = available(query);
 		int cost = 800;
 		System.out.println("list is"+list);
+		
 		new BookingGUI(list,len);
 	}
 
@@ -23,7 +25,7 @@ System.out.println("dd"+checkin+"  "+checkout);
 		ResultSet res= new DatabaseConnector().query(query);
 		while(res.next())
 			{
-		strlist += "\n"+res.getInt("room_number");
+		strlist += res.getInt("room_number")+" ";
 		len++;
 		
 		}

@@ -32,4 +32,14 @@ public class DatabaseConnector {
 				return null;
 		
 	}
+	 public void update(String qu) throws SQLException{
+		  Connection connection=new DatabaseConnector().connect();
+		   Statement statement;
+		 
+		            statement = (Statement) connection.createStatement();
+		          statement.executeUpdate(qu);
+		          System.out.println("updated successfully");
+		        
+		
+	}
 }

@@ -1,33 +1,25 @@
 package booking;
 
+import java.util.Date;
 import java.sql.SQLException;
 
 public class HotelOperations {
 	
    public static void main(String[] args) throws SQLException{
+	   //following will be removed one integrated
 	 BookingGUI gui =new BookingGUI();
-	gui.makeBookingGUI();
-	   HotelRoomSubject obj = new HotelRoom();
-	   new Customer(obj);
-	   new Manager(obj);
-	 //  obj.notifyUser("booked");
-	   //Booking.......that is removing the room from the list
-	 obj.bookRoom();
-	   
-	   //Cancellation
-	 //  obj.cancelRoom();
-	  //To test the factory method
-	 //System.out.println("for factory test...."+gui.textAreaGuest.getText());
-	 new HotelOperations().roomAvailable("standard");
-	   
+	 //called when Guest enters from main screen
+	 gui.makeBookingGUI();
+  
    }
      
-   public void roomAvailable(String str) throws SQLException{
+   public void roomAvailable(String str, String checkin ,String checkout) throws SQLException{
 	   
 	RoomFactory rmfactory= new RoomFactory();
 	
-	rmfactory.getRoom(str);
+	rmfactory.getRoom(str,checkin ,checkout);
 	   System.out.println("here it is.ready for testing.");
 	   
    }
+
 }

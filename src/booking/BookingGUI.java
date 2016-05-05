@@ -1,6 +1,5 @@
 package booking;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,19 +10,21 @@ import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
+import javafx.scene.control.CheckBox;
+
 public class BookingGUI {
+	
 	
 	// integration required from the other modules..
 	    static JTextArea textAreaGuest = new JTextArea();
@@ -34,22 +35,24 @@ public class BookingGUI {
 	   static JButton confirmButt= new JButton("Book");
 	   static ArrayList<Integer> num = new ArrayList<Integer>();
 	   static  JComboBox ticketsNum= new JComboBox();
-	
+	  
+	static CustomerDetails cust = new CustomerDetails();
 	   public BookingGUI(String str, int len){
 		   frame.repaint();
-	        textAreaGuest.setText("Room Number available are :\n"+ str);
+	        textAreaGuest.setText("Room available are :"+ str.split(" ")[0]);
+	        cust.setRoomsAvailable(str);
 		   System.out.println("pls yr"+textAreaGuest.getText());
-		   roomAvailable.setText("Number of rooms available are: "+str.length());
+		   roomAvailable.setText("Number of rooms available are: "+len);
 		   if(len>0)
-		   { 
-			confirmButt.setText("Book "+lastState);
-	       confirmButt.setEnabled(true);
+			   confirmButt.setEnabled(true);
+		   else
+	       confirmButt.setEnabled(false);
 	 
-		   }
+		   
 		  frame.repaint();
 	   }
 	   public BookingGUI() { 
-		// TODO Auto-generated constructor stub
+		
 	}
 	   public void makeBookingGUI(){
 		 
@@ -71,11 +74,10 @@ public class BookingGUI {
 	      
 	       //create label for 'create an account' and 'sign in'
 	       JLabel ReserveRoomLabel = new JLabel("Reserve your room now");
-	       JLabel viewOrCancelReservation = new JLabel("View your current "
-	               + "reservation or Cancel a reservation");
+	       JLabel viewOrCancelReservation = new JLabel("Cancel Reservation");
 
-	       JButton makeReservationButton = new JButton("Make a Reservation");
-	       JButton viewOrCanceltButton = new JButton("View/Cancel a Reservation");
+	       JButton makeReservationButton = new JButton("View / Make a Reservation");
+	       JButton viewOrCanceltButton = new JButton("Cancel a Reservation");
 	       JButton backButton = new JButton ("Back");
 
 	       frame.add(ReserveRoomLabel);
@@ -94,6 +96,7 @@ public class BookingGUI {
 	               @Override
 	               public void actionPerformed(ActionEvent event) {
 	                   createMakeReservationGUI();
+	                   
 	               }//actionPerformed
 	           }//ActionListener
 	       );
@@ -102,7 +105,7 @@ public class BookingGUI {
 		               @Override
 		               public void actionPerformed(ActionEvent event) {
 		                 // HAVE TO CHANGE AS PER THE OBSERVER PATTERN
-		            	   new CancellationGUI().createViewOrCancelGUI();
+		            	   createViewOrCancelGUI();
 		               }//actionPerformed
 		           }//ActionListener
 		       );
@@ -110,11 +113,7 @@ public class BookingGUI {
 	   }
 	   public static void createMakeReservationGUI(){
 
-	      
-	       
-	      // confirmButt.setText("Book");
-	       confirmButt.setEnabled(false);
-	    pane.removeAll();
+	       pane.removeAll();
 	       JButton transactionDoneButt = new JButton("Transaction Done");
 	       JButton backButt = new JButton ("Home");
 	       final JButton standardButt = new JButton ("Standard");
@@ -128,10 +127,11 @@ public class BookingGUI {
 	       final JLabel errorMessage = new JLabel();
 	       for(int i=1;i<= 3;i++)
 	    	   num.add(new Integer(i));
-	      
+	      cust.setNumberOfRooms(1);
 		 System.out.println("num is"+num);
 		  ticketsNum= new JComboBox(num.toArray());
-	   
+		  confirmButt.setEnabled(false);
+		  
 	    //   ticketsNum= new JComboBox();
 
 //get the selected item:
@@ -143,8 +143,7 @@ System.out.println("You selected : " + selectedNum);
 	               + "you select the check-in and check-out \ndates and room type.");
 	   
 	       frame.setTitle("Hotel Paris - Make Transaction");
-	       pane = frame.getContentPane(); //Get content pane
-	       pane.setLayout(null); //Apply null layout
+	      
 	       UtilDateModel model = new UtilDateModel();
 	       UtilDateModel modelO = new UtilDateModel();
 	     //model.setDate(20,04,2014);
@@ -156,22 +155,20 @@ System.out.println("You selected : " + selectedNum);
 	     Date dateAndTime = Calendar.getInstance().getTime();
 	     model.setValue(dateAndTime);
 	     modelO.setValue(dateAndTime);
+	     
 	     model.setSelected(true);
 	    JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
 	    JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 	     JDatePanelImpl datePanelO = new JDatePanelImpl(modelO, p);
 	    JDatePickerImpl datePickerO = new JDatePickerImpl(datePanelO, new DateLabelFormatter());
-	 //   datePicker.getMonthView().setLowerBound(dateAndTime);
-	  //  datePicker.getJFormattedTextField().setT   .setText(dateAndTime);
-	   //    Date selectedDate = (Date) datePicker.getModel().getValue();
-	 //      System.out.println("date panel.."+ datePicker.getModel().getValue());
-	    
-	    JLabel calendarErrorMessage = new JLabel();
+	    cust.setStartDate(datePicker.getJFormattedTextField().getText());
+ 	    cust.setEndDate(datePickerO.getJFormattedTextField().getText());
+ 	       JLabel calendarErrorMessage = new JLabel();
 	       errorMessage.setBounds(25, 200, 200, 50);
 	       calendarErrorMessage.setBounds(30, 260, 250, 50);
 	       calendarErrorMessage.setText("");
-	      checkInLabel.setBounds(30, 140, 75, 25);
-	      datePicker.setBounds(100, 150, 140, 25);
+	       checkInLabel.setBounds(30, 140, 75, 25);
+	       datePicker.setBounds(100, 150, 140, 25);
 	       checkOutLabel.setBounds(30, 170, 75, 25);
 	       datePickerO.setBounds(100, 180, 140, 25);
 	      confirmButt.setBounds(280, 300, 150, 50);
@@ -197,6 +194,8 @@ System.out.println("You selected : " + selectedNum);
 	               public void stateChanged(ChangeEvent event) {
 	            	   System.err.println("yess");
 	            	   boolean out=false;boolean in= false;
+	            	   cust.setStartDate(datePicker.getJFormattedTextField().getText());
+	            	   cust.setEndDate(datePickerO.getJFormattedTextField().getText());
 	            	   
 // || (datePicker.getModel().getMonth()==dateAndTime.getMonth() && datePicker.getModel().getDay() > dateAndTime.getDay()))
          			  
@@ -209,6 +208,7 @@ System.out.println("You selected : " + selectedNum);
 	            	
 	           if(in && out){
 	        	   confirmButt.setEnabled(true);   
+	        	   
 	        	   calendarErrorMessage.setText("");   
 	           }
 	           else
@@ -218,8 +218,23 @@ System.out.println("You selected : " + selectedNum);
 	       }
 	        
 	       };
-	      model.addChangeListener(listener);
+	     
+	       // dropdown change listener
+	       //ChangeListener
+	        ActionListener numchange= new
+	           ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.out.println("selection of ticket number changed");
+					cust.setNumberOfRooms(Integer.parseInt(ticketsNum.getSelectedItem().toString()));
+				}
+	               
+	              
+	       };
+	       model.addChangeListener(listener);
 	      modelO.addChangeListener(listener);
+	      ticketsNum.addActionListener(numchange);
 	      backButt.addActionListener( 
 	              new ActionListener() {
 	                  @Override
@@ -234,13 +249,13 @@ System.out.println("You selected : " + selectedNum);
 	              new ActionListener() {
 	                  @Override
 	                  public void actionPerformed(ActionEvent event) {
-	                	  String str= event.getActionCommand();
+	                	 
 	                	  try {
-	                		  lastState =str;
+	                		  cust.setRoomsType("FamilyRoom");
 	                		  System.out.println("date chaneg"+(Date) datePicker.getModel().getValue());
 	                		if(((Date) datePicker.getModel().getValue() != null) && ((Date) datePickerO.getModel().getValue() != null) )
 	                		{
-							    new HotelOperations().roomAvailable(str,datePicker.getJFormattedTextField().getText(),datePickerO.getJFormattedTextField().getText());
+							    new HotelOperations().roomAvailable(cust.getRoomsType(),cust.getStartDate(),cust.getEndDate());
 							     errorMessage.setText("");
 	                		}
 	                		else
@@ -255,10 +270,11 @@ System.out.println("You selected : " + selectedNum);
 	                  @Override
 	                  public void actionPerformed(ActionEvent event) {
 	                	  System.out.println(event.getActionCommand()+" Click");
-	                	  String str= event.getActionCommand();
+	                	  cust.setRoomsType("Standard");
+	                	
 	                	  try {
-	                		  lastState =str;
-							new HotelOperations().roomAvailable(str,datePicker.getJFormattedTextField().getText(),datePickerO.getJFormattedTextField().getText());
+	                		 
+							new HotelOperations().roomAvailable(cust.getRoomsType(),cust.getStartDate(),cust.getEndDate());
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
@@ -267,16 +283,32 @@ System.out.println("You selected : " + selectedNum);
 	              new ActionListener() {
 	                  @Override
 	                  public void actionPerformed(ActionEvent event) {
-	                	  String str= event.getActionCommand();
+	                	  cust.setRoomsType("Suit");
 	                	  try {
-							new HotelOperations().roomAvailable(str,datePicker.getJFormattedTextField().getText(),datePickerO.getJFormattedTextField().getText());
-							 lastState =str;
+							new HotelOperations().roomAvailable(cust.getRoomsType(),cust.getStartDate(),cust.getEndDate());
+							
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 	                  }});    
 	      
+	       confirmButt.addActionListener( 
+		              new ActionListener() {
+		                  @Override
+		                  public void actionPerformed(ActionEvent event) {
+		                	 
+		                	
+		                	  //MERGEWTH GEORGE AND REMOVE............TEMP SETTING CUSTOMERID........
+		                	  cust.setCustomerID("8899");
+		                	
+		                	 //calling the observer client... to invoke and notify all users 
+		                	  new BookingClient().bookNow(cust);
+								System.out.println("call to observer ended");
+							
+		                  }});    
+		      
+	       
 	      ////////////////////////////////////////////////////////////////////////////////////////////
 	       frame.add(errorMessage);
 	       frame.add(roomAvailable);
@@ -302,5 +334,83 @@ System.out.println("You selected : " + selectedNum);
 	       frame.repaint();
 	      
 	   }
-  
+
+	   
+	   public static void createViewOrCancelGUI() {
+		   frame.repaint();
+		   pane.removeAll();
+	    	  frame.setLocation(500, 100); //open in center of screen
+		       frame.setSize(680, 400);
+		       frame.setResizable(false);
+		       frame.setVisible(true);
+	        final JButton cancelButt = new JButton("Cancel Reservation");
+	        JButton homeButt = new JButton("Home");
+	        JButton backButt = new JButton ("Back");
+	        
+	        JLabel label1 = new JLabel("Select a reservation you would like to cancel:");
+	        JLabel label2 = new JLabel("Then press 'Cancel Reservation' button.");
+	        final JLabel errorMessage = new JLabel();
+	        
+	        frame.setTitle("Hotel Paris - Cancel or View Reservations");
+	        int numberCheckBox = 3;
+	        	 
+	        		for(int i = 0; i < numberCheckBox; i++) {
+	        			 JCheckBox cb = new JCheckBox("New CheckBox");
+	        	          cb.setBounds(10, 100+(30*i), 100, 30);
+	        	          frame.add(cb);
+	        		}
+	        		
+	       errorMessage.setBounds(25, 200, 200, 50);
+	        label1.setBounds(15, 40, 300, 25);
+	        label2.setBounds(15, 70, 300, 25);
+	        cancelButt.setBounds(280, 300, 150, 50);
+	        homeButt.setBounds(480, 300, 150, 50);
+	        backButt.setBounds(10, 300, 75, 50);
+
+	        cancelButt.setEnabled(false); 
+	        backButt.addActionListener( 
+		              new ActionListener() {
+		                  @Override
+		                  public void actionPerformed(ActionEvent event) {
+		                	  createReservationOrViewGUI(); 
+		                	
+		                  }
+		                  }); 
+	        cancelButt.addActionListener( 
+		              new ActionListener() {
+		                  @Override
+		                  public void actionPerformed(ActionEvent event) {
+		                	  //MERGEWTH GEORGE AND REMOVE............TEMP SETTING CUSTOMERID........
+		                	  cust.setCustomerID("8899");
+		                	
+		                	 //calling the observer client... to invoke and notify all users 
+		                	  new BookingClient().cancelNow(cust);
+								System.out.println("call to observer ended");
+		                  }
+		                  }); 
+	        homeButt.addActionListener( 
+		              new ActionListener() {
+		                  @Override
+		                  public void actionPerformed(ActionEvent event) {
+		                	 // STILL MERGE......
+
+		                	 
+		                  }
+		                  }); 
+		      
+	        //associate go home to its button
+	      
+	        frame.add(errorMessage);
+	        frame.add(cancelButt);
+	        frame.add(homeButt);
+	        frame.add(backButt);
+	        frame.add(label1);
+	        frame.add(label2);
+	       // frame.add(listScroller); 
+	        frame.repaint();      
+	        frame.revalidate();
+	        
+	    }//createViewOrCancelGUI
+	   
+
 	 }

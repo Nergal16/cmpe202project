@@ -21,7 +21,7 @@ public class Suit implements RoomVariety {
 		ResultSet res= new DatabaseConnector().query(query);
 		String strlist="";
 		while(res.next())
-			{strlist += "\n"+res.getInt("room_number");len++;}
+			{strlist += res.getInt("room_number")+" ";len++;}
 		return strlist;
 	}
 

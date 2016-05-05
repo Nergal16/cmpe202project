@@ -4,7 +4,7 @@ public class HotelObserver implements Observers{
 
 	
 	@Override
-	public void update(String str) {
+	public void update(String str, CustomerDetails cust) {
 		
 		
 	}

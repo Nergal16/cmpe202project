@@ -21,7 +21,7 @@ int cost = 1200;
 		//String query= "Select room_number from availableroom where room_type='FamilyRoom'";
 		ResultSet res= new DatabaseConnector().query(query);
 		while(res.next()){
-			strlist += "\n"+res.getInt("room_number");
+			strlist += res.getInt("room_number")+" ";
 			len++;
 			}
 		return strlist;

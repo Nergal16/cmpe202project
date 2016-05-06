@@ -139,9 +139,9 @@ public class HotelParis implements Serializable {
         reviewButton= new JButton("View Reviews");
         viewButton = new JButton("View Hotel");
         guestButton.setBounds(175, 100, 310, 50);
-        managerButton.setBounds(175, 180, 310, 50);
-        viewButton.setBounds(175, 260, 310, 50);
-        reviewButton.setBounds(175,300,310,50);
+        managerButton.setBounds(175, 160, 310, 50);
+        viewButton.setBounds(175, 220, 310, 50);
+        reviewButton.setBounds(175,280,310,50);
 
         frame.add(guestButton);
         frame.add(managerButton);
@@ -247,7 +247,6 @@ public class HotelParis implements Serializable {
                 room.printItems();
             }
         });
-
         ButtonGroup group=new ButtonGroup();
         group.add(food);
         group.add(hotel);
@@ -259,9 +258,8 @@ public class HotelParis implements Serializable {
         pane.add(rooms);
 
         pane.add(backButton);
-
         frame.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
-        frame.setSize(800, 500);
+        frame.setSize(500, 500);
         frame.setVisible(true);
     }
 

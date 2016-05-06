@@ -175,10 +175,17 @@ public class HotelParis implements Serializable {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent event) {
-                        createCalendarGUI();
+                    	LoginDialog loginDlg = new LoginDialog(frame);
+                        loginDlg.setVisible(true);
+                       // createCalendarGUI();
+                    	//User user=new User("manager","password");
+                    	//ManagerProxy managerProxy=new ManagerProxy(user);
+                    	//managerProxy.managerOperations();
+                    	//IManager manager = new Manager();
+                    	//manager.managerOperations();
                     }//actionPerformed
                 }//ActionListener
-        );
+            );
 
         //set actionListener for view button
         viewButton.addActionListener(
@@ -270,16 +277,16 @@ public class HotelParis implements Serializable {
      */
     public static void createSignInGUI() {
         pane.removeAll();
-        
+
         textField = new JTextField();
         JButton submitButton = new JButton("Submit");
-        JButton backButton = new JButton ("Back");        
+        JButton backButton = new JButton ("Back");
         JLabel signInLabel = new JLabel("Enter User ID:");
-        
+
         frame.setTitle("Hotel Paris - Sign In");
         pane = frame.getContentPane(); //Get content pane
         pane.setLayout(null); //Apply null layout
-        
+
         signInLabel.setBounds(175, 75, 310, 25);
         submitButton.setBounds(175, 200, 310, 50);
         textField.setBounds(175, 100, 310, 25);
@@ -303,7 +310,7 @@ public class HotelParis implements Serializable {
                     }//actionPerformed
                 }//ActionListener
         );
-        
+
         //associate go back with its button
         backButton.addActionListener(
                 new ActionListener() {
@@ -322,7 +329,7 @@ public class HotelParis implements Serializable {
         frame.repaint();
 
     }//createSignInGUI
-    
+
     public static void createReservationOrViewGUI() {
         transactionID = (int) Math.floor(Math.random() * 900000000) + 100000000;
         model.setTransactionID(transactionID);
@@ -1038,7 +1045,7 @@ public class HotelParis implements Serializable {
         frame.add(textAreaGuest);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.repaint();
-    	
+
     }
 
     /**

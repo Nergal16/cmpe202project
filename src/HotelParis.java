@@ -101,11 +101,13 @@ public class HotelParis implements Serializable {
         realYear = cal.get(GregorianCalendar.YEAR); //Get year
         currentMonth = realMonth; //Match month and year
         currentYear = realYear;
-
-        // set frame for RoomServiceController
-        RoomServiceController.getInstance().setMenuScreenFrame(frame);
         //create main GUI for guest and manager
         createMainGUI();
+
+        // set frame for RoomServiceController
+        RoomServiceController.getInstance().setMenuScreenFrame(frame, pane);
+       // RoomServiceController.getInstance().startNewOrder(101);  //tODO delete test only
+
 
     }//main
 
@@ -292,10 +294,29 @@ public class HotelParis implements Serializable {
         //hook order room service button with its method
         orderRoomServiceButton.addActionListener(
                 new ActionListener() {
+                    private Integer roomNumber = 0;
                     @Override
                     public void actionPerformed(ActionEvent event) {
                         frame.repaint();
-                        //TODO hook this to orderRoomService
+                        // get room number
+                        int theTransactionID = 0;
+                        if (!treeMapGuest.isEmpty()) {
+                            //if user is in the system
+                            if (treeMapGuest.containsKey(userID)) {
+                                int i = 0;
+                                //while user have reservations
+                                while (i < treeMapGuest.get(userID).enterDate.size()) {
+                                    if (theTransactionID !=
+                                            treeMapGuest.get(userID).nowTransactionID.get(i)) {
+                                        theTransactionID =
+                                                treeMapGuest.get(userID).nowTransactionID.get(i);
+                                        roomNumber = treeMapGuest.get(userID).getRoomNumber(i);
+                                    }//if
+                                    i++;
+                                }//while
+                            }//if
+                        }//if
+                        RoomServiceController.getInstance().startNewOrder(roomNumber);
                         frame.repaint();
                     }//actionPerformed
                 }//ActionListener

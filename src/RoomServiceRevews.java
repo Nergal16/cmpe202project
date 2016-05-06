@@ -1,20 +1,12 @@
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.border.Border;
 
 
 public class RoomServiceRevews implements Review {
@@ -74,7 +66,7 @@ public class RoomServiceRevews implements Review {
 				
 				JLabel review=new JLabel();				
 				review.setText("<html>"+fname+", "+age+"<br> Rating: "+rating+"/5<br>"+description+"<br>");
-				review.setFont(new Font("Serif", Font.PLAIN, 40));
+				review.setFont(new Font("Serif", Font.PLAIN, 18));
 				  
 				if(count%2!=0){
 					review.setBackground(Color.GRAY);

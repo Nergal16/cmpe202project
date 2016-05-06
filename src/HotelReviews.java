@@ -68,7 +68,7 @@ public class HotelReviews implements Review {
 				
 				JLabel review=new JLabel();				
 				review.setText("<html>"+fname+", "+age+"<br> Rating: "+rating+"/5<br>"+description+"<br>");
-				review.setFont(new Font("Serif", Font.PLAIN, 40));
+				review.setFont(new Font("Serif", Font.PLAIN, 18));
 				  
 				if(count%2!=0){
 					review.setBackground(Color.GRAY);

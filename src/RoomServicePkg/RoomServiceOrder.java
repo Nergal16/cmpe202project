@@ -25,10 +25,13 @@ public class RoomServiceOrder implements RoomService {
     @Override
     public void printItems() {
         // for test only TODO: delete log message after UI is done
+        System.out.println();
+        System.out.println("*****************************");
         System.out.println(description);
         for (RoomService item : items){
             item.printItems();
         }
+        System.out.println("*****************************");
     }
 
     @Override

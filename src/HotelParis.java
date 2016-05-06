@@ -205,9 +205,9 @@ public class HotelParis implements Serializable {
     }//createMainGUI
 
     ///
-    public static void createCalendarGUI() {
+ /*   public static void createCalendarGUI() {
         ManagerGUI.createCalendarGUI();
-    }
+    } */
     public static void createReviewGUI(){
         frame.setTitle("Hotel Paris Reviews");
         frame.getContentPane().removeAll();

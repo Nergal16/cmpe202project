@@ -8,6 +8,8 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -35,7 +37,9 @@ public class HotelParis implements Serializable {
     static JPanel panel;
     static JTextArea textArea;
     static JButton guestButton;
-    static JButton managerButton;
+    static JButton managerButton,reviewButton, backButton;
+    static JLabel select;
+    static JRadioButton food, rooms, hotel;
     static JButton viewButton;
     static JTextField textField;
     static JTextArea textAreaFormat;
@@ -88,7 +92,8 @@ public class HotelParis implements Serializable {
 
         frame = new JFrame ();
         frame.setLocation(500, 100); //open in center of screen
-        frame.setSize(680, 400);
+       //increased height of frame --Mandeep Kaur 04/23/2016
+        frame.setSize(680, 550);
         frame.setResizable(false);
 
         frame.repaint();
@@ -131,19 +136,30 @@ public class HotelParis implements Serializable {
         //create two radio buttons and associate action listeners
         guestButton = new JButton("Guest");
         managerButton = new JButton("Manager");
+        reviewButton= new JButton("View Reviews");
         viewButton = new JButton("View Hotel");
         guestButton.setBounds(175, 100, 310, 50);
         managerButton.setBounds(175, 180, 310, 50);
         viewButton.setBounds(175, 260, 310, 50);
+        reviewButton.setBounds(175,300,310,50);
 
         frame.add(guestButton);
         frame.add(managerButton);
         frame.add(viewButton);
-
+        frame.add(reviewButton);
         //add button
         JButton contButton = new JButton("Continue");
         contButton.setEnabled(true);
+        //adding action listener
+        reviewButton.addActionListener(new ActionListener(){
 
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				createReviewGUI();
+			}
+		});
         //set actionListener for guest button
         guestButton.addActionListener(
                 new ActionListener() {
@@ -184,6 +200,69 @@ public class HotelParis implements Serializable {
     ///
     public static void createCalendarGUI() {
         ManagerGUI.createCalendarGUI();
+    }
+    public static void createReviewGUI(){
+        frame.setTitle("Hotel Paris Reviews");
+        frame.getContentPane().removeAll();
+        frame.getContentPane().repaint();
+
+        select= new JLabel("Select one Option:");
+        hotel=new JRadioButton("Hotel");
+        food=new JRadioButton("Food");
+        rooms=new JRadioButton("Rooms");
+        backButton=new JButton("Go Back");
+
+        pane=frame.getContentPane();
+
+        backButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+                createMainGUI();
+            }
+        });
+        hotel.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent arg0) {
+                // TODO Auto-generated method stub
+                HotelReviews hotel=new HotelReviews();
+                hotel.printItems();
+            }
+        });
+
+        food.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent arg0) {
+                // TODO Auto-generated method stub
+                FoodReviews food=new FoodReviews();
+                food.printItems();
+            }
+        });
+        rooms.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent arg0) {
+                // TODO Auto-generated method stub
+                RoomServiceRevews room=new RoomServiceRevews();
+                room.printItems();
+            }
+        });
+
+        ButtonGroup group=new ButtonGroup();
+        group.add(food);
+        group.add(hotel);
+        group.add(rooms);
+
+        pane.add(select);
+        pane.add(hotel);
+        pane.add(food);
+        pane.add(rooms);
+
+        pane.add(backButton);
+
+        frame.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        frame.setSize(800, 500);
+        frame.setVisible(true);
     }
 
     /**

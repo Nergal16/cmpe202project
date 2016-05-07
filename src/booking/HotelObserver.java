@@ -4,14 +4,14 @@ public class HotelObserver implements Observers{
 
 	
 	@Override
-	public void update(String str) {
-		// TODO Auto-generated method stub
+	public void update(String str, CustomerDetails cust) {
+		
 		
 	}
 
 	@Override
 	public void action(String str) {
-		// TODO Auto-generated method stub
+	
 		
 	}
 //Observer

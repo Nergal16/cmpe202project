@@ -193,7 +193,8 @@ public class HotelParis implements Serializable {
                     @Override
                     public void actionPerformed(ActionEvent event) {
                         //TODO hook this to ViewHotel class
-
+                        String[] args = null;
+                        ViewHotel.main(args);
                     }//actionPerformed
                 }//ActionListener
         );
